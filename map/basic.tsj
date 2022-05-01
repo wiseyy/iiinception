@@ -1,0 +1,28 @@
+{ "columns":128,
+ "image":"tile.png",
+ "imageheight":4096,
+ "imagewidth":4096,
+ "margin":0,
+ "name":"basic",
+ "spacing":0,
+ "tilecount":16384,
+ "tiledversion":"1.8.4",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.8",
+ "wangsets":[
+        {
+         "colors":[
+                {
+                 "color":"#ff0000",
+                 "name":"",
+                 "probability":1,
+                 "tile":-1
+                }],
+         "name":"Unnamed Set",
+         "tile":-1,
+         "type":"corner",
+         "wangtiles":[]
+        }]
+}
