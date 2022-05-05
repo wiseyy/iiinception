@@ -1,0 +1,14 @@
+{ "columns":22,
+ "image":"b2.png",
+ "imageheight":930,
+ "imagewidth":710,
+ "margin":0,
+ "name":"b2",
+ "spacing":0,
+ "tilecount":638,
+ "tiledversion":"1.8.4",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.8"
+}

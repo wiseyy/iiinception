@@ -1,0 +1,14 @@
+{ "columns":7,
+ "image":"yulu.png",
+ "imageheight":249,
+ "imagewidth":226,
+ "margin":0,
+ "name":"yulu",
+ "spacing":0,
+ "tilecount":49,
+ "tiledversion":"1.8.4",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.8"
+}

@@ -1,0 +1,11 @@
+{ "columns":0,
+ "margin":0,
+ "name":"yulu_img",
+ "spacing":0,
+ "tilecount":0,
+ "tiledversion":"1.8.4",
+ "tileheight":1,
+ "tilewidth":1,
+ "type":"tileset",
+ "version":"1.8"
+}
