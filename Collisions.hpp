@@ -53,7 +53,7 @@ bool checkCollision(SDL_Rect a, SDL_Rect b)
 
 bool touchesWall(SDL_Rect obj, Tile* roads[]){
 	for(int i = 0; i< TOTAL_TILES ; ++i){
-		if(checkCollision(obj, roads[i]->getBox()) ){
+		if(checkCollision(obj, roads[i]->getBox()) && roads[i]->getType() != 0 ){
 			return false;
 		}
 	}

@@ -26,7 +26,7 @@ int main() {
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
 		// Texture t1 = Texture();
 		// Texture map = Texture("assets/map.")
-		Player p1 = Player("assets/player.png", 0, 0, 0,0,gRenderer);
+		Player p1 = Player("assets/player.png", 30*32 + 5 ,129*32+5, 0,0,gRenderer);
 		TileMap* mazeMap = new TileMap("map/map_tiles.png", MAP_TILE_TYPES,"map/map.txt","map",MAP_PIXELS_HEIGHT/32, MAP_PIXELS_WIDTH/32, gRenderer);
 		TileMap* roadMap = new TileMap("map/road_tiles.png", ROAD_TILE_TYPES, "map/roads.txt", "road", ROAD_PIXELS_HEIGHT/32, ROAD_PIXELS_WIDTH/32,gRenderer);
 		// bool x = t1.loadfromFile("map/b1.png", gRenderer);

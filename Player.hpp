@@ -122,12 +122,10 @@ void Player::setCamera(SDL_Rect &camera){
 	camera.y = ( collBox.y + PLAYER_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
 
 	//Keep the camera in bounds
-	if( camera.x < 0 )
-	{ 
+	if( camera.x < 0 ){ 
 		camera.x = 0;
 	}
-	if( camera.y < 0 )
-	{
+	if( camera.y < 0 ){
 		camera.y = 0;
 	}
 	if( camera.x > MAP_WIDTH - camera.w )
