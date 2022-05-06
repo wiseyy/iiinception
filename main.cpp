@@ -42,7 +42,7 @@ int main() {
 				p1.handleEvent(e, gRenderer);
 			}
 
-			p1.move();
+			p1.move(roadMap->Map);
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
 			mazeMap->render(camera, gRenderer);

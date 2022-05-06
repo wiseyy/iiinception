@@ -7,7 +7,7 @@
 #include<vector>
 #include "constants.hpp"
 #include "Texture.hpp"
-
+#include "Collisions.hpp"
 class Player{
 	public: 
 	// Dimensions of the player 
@@ -21,7 +21,7 @@ class Player{
 	// Handle the user input from keyboard or mouse
 	void handleEvent (SDL_Event &e, SDL_Renderer* Renderer);
 	// move player in each game loop
-	void move();
+	void move(Tile* roads[]);
 	// render the player according to the camera
 	void render(SDL_Rect &camera, SDL_Renderer* Renderer); 
 	// set the camera according to the player
@@ -144,12 +144,12 @@ SDL_Rect Player::getCollBox(){
 	return collBox; 
 }
 
-void Player::move(){
+void Player::move(Tile* roads[]){
 	//Move the dot left or right
     xPos += xVel;
     collBox.x += xVel;
     //If the dot went too far to the left or right
-    if( ( xPos < 0 ) || ( xPos + PLAYER_WIDTH > MAP_WIDTH )){
+    if( ( xPos < 0 ) || ( xPos + PLAYER_WIDTH > MAP_WIDTH ) || touchesWall(collBox, roads)){
         //Move back
         xPos -= xVel;
         collBox.x -= xVel; 
@@ -158,7 +158,7 @@ void Player::move(){
     yPos += yVel;
     collBox.y += yVel;
     //If the dot went too far up or down
-    if( ( yPos < 0 ) || ( yPos + PLAYER_HEIGHT > MAP_HEIGHT )){
+    if( ( yPos < 0 ) || ( yPos + PLAYER_HEIGHT > MAP_HEIGHT ) || touchesWall(collBox, roads)){
         //Move back
         yPos -= yVel;
         collBox.y -= yVel;
