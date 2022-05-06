@@ -109,7 +109,7 @@
          "name":"road",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":380,
          "x":0,
          "y":0
