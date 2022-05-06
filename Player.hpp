@@ -14,7 +14,7 @@ class Player{
 	static const int PLAYER_WIDTH = 50;
 	static const int PLAYER_HEIGHT = 50;
 
-	int PLAYER_VEL = 5;
+	int PLAYER_VEL = 2;
 	// Constructors for the Player
 	Player(); 
 	Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Renderer);
@@ -31,6 +31,9 @@ class Player{
 	void getOnYulu(SDL_Renderer* Renderer);
 	void getOffYulu(SDL_Renderer* Renderer);
 	int getCoins();
+	pair<int, int> getCoordinates(){
+		return {xPos, yPos};
+	}
 	// vector<SecretItem*> getItemList();
 	bool onYulu = false;
 private:

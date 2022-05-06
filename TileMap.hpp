@@ -16,6 +16,7 @@ public:
 	int getType();
 	SDL_Rect getBox();
 	string getID();
+	pair<int, int> getCoordinates();
 	// void render(SDL_Renderer* Renderer);
 private:
 	int type; 
@@ -48,6 +49,9 @@ Tile::Tile(string idx , int x, int y, int tileType){
     type = tileType;
 }
 
+pair<int, int> getCoordinates(){
+	return {collBox.x, collBox.y};
+}
 int Tile::getType(){
 	return type; 
 }
