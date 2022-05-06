@@ -1,0 +1,14 @@
+{ "columns":12,
+ "image":"faculty.png",
+ "imageheight":188,
+ "imagewidth":412,
+ "margin":0,
+ "name":"faculty",
+ "spacing":0,
+ "tilecount":60,
+ "tiledversion":"1.8.4",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.8"
+}
