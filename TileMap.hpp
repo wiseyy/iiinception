@@ -51,7 +51,7 @@ Tile::Tile(string idx , int x, int y, int tileType){
 }
 
 pair<int, int> Tile::getCoordinates(){
-	return {collBox.x + collBox.w/2, collBox.y + collBox.h/2};
+	return {collBox.x , collBox.y};
 }
 int Tile::getType(){
 	return type; 
@@ -111,7 +111,7 @@ TileMap::TileMap(std::string sprite,int typeCount,  std::string path,string idx,
 
   	//If the map couldn't be loaded
     if( map.fail() ){
-		printf("Unable to load map file!\n" );
+		cout << "Unable to load map file! " << path <<endl;
     } 
     else{
     	//Initialize the tiles

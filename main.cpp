@@ -10,6 +10,7 @@
 #include "Coin.hpp"
 #include "Player.hpp"
 #include "TileMap.hpp"
+#include "Gift.hpp"
 #include <fstream>
 
 using namespace std;
@@ -27,24 +28,40 @@ int main() {
 	else{
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
-		// Texture t1 = Texture();
-		// Texture map = Texture("assets/map.")
-		Player p1 = Player("assets/player.png", 30*32 + 5 ,129*32+5, 0,0,gRenderer);
-		TileMap* mazeMap = new TileMap("map/map_tiles.png", MAP_TILE_TYPES,"map/map.txt","map",MAP_PIXELS_HEIGHT/TILE_HEIGHT, MAP_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
-		TileMap* roadMap = new TileMap("map/road_tiles.png", ROAD_TILE_TYPES, "map/roads.txt", "road", ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
-		// bool x = t1.loadfromFile("map/b1.png", gRenderer);
+		
+		// Generating different layers of our tilemap
+		
+		TileMap* collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES,"map/sdl_stuff/collision.txt","collision",COLL_PIXELS_HEIGHT/TILE_HEIGHT, COLL_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
+		TileMap* below_roadMap = new TileMap("map/sdl_stuff/below_road_tiles.png", BELOW_ROAD_TILE_TYPES, "map/sdl_stuff/below_road.txt", "below_road", BELOW_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, BELOW_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
+		TileMap* roadMap = new TileMap("map/sdl_stuff/road_tiles.png", ROAD_TILE_TYPES, "map/sdl_stuff/road.txt", "road", ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
+		TileMap* above_roadMap = new TileMap("map/sdl_stuff/above_road_tiles.png", ABOVE_ROAD_TILE_TYPES, "map/sdl_stuff/above_road.txt", "above_road", ABOVE_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ABOVE_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
+		TileMap* trashMap = new TileMap("map/sdl_stuff/trash_tiles.png",TRASH_TILE_TYPES,"map/sdl_stuff/trash.txt","trash",TRASH_PIXELS_HEIGHT/TILE_HEIGHT, TRASH_PIXELS_WIDTH/TILE_WIDTH, gRenderer );
+		
+		// Generating road coordinates
 		vector<pair<int, int>> roadCoordinates; 
 		for(int i = 0; i<TOTAL_TILES; ++i){
 			if ((roadMap->Map[i])->getType() != 0){
 				roadCoordinates.push_back((roadMap->Map[i])->getCoordinates());
 			}
 		}
+		// generating player on the road
+		Player p1 = Player("assets/player.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
 		for(int i = 0; i<TOTAL_COINS; ++i){
 			coinCoordinates[i] = roadCoordinates[coinIndices[i]];
 		}
 		vector<Coin*> coins = generateCoins("assets/coin.png", coinCoordinates, gRenderer);
+
+		// Generating Gifts for the map
+		vector<int> giftIndices = generateRandomVectorDistinct(TOTAL_GIFTS, 0, roadCoordinates.size()-1);
+		vector<pair<int, int>> giftCoordinates(TOTAL_GIFTS);
+		for(int i = 0; i<TOTAL_GIFTS; ++i){
+			giftCoordinates[i] = roadCoordinates[giftIndices[i]];
+		}
+		vector<Gift*> gifts = generateGifts("assets/box.png", giftCoordinates, gRenderer);
+
 		cout<< roadCoordinates.size()<<endl;
 		cout<<"Media Loaded\n";
 		bool quit = false;
@@ -58,13 +75,19 @@ int main() {
 				}
 				p1.handleEvent(e, gRenderer);
 			}
-			p1.move(roadMap->Map, coins);
+			p1.move(roadMap->Map, coins, gifts);
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
-			mazeMap->render(camera, gRenderer);
+			collisionMap->render(camera, gRenderer);
+			below_roadMap->render(camera, gRenderer);
 			roadMap->render(camera, gRenderer);
+			above_roadMap->render(camera, gRenderer);
+			trashMap->render(camera, gRenderer);
 			renderCoins(coins, camera, gRenderer);
+			renderGifts(gifts, camera, gRenderer);
 			p1.render(camera, gRenderer);
+			
+			
 
 			// t1.setDimensions(20,20);
 			// t1.render(0,0,gRenderer);

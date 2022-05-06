@@ -8,11 +8,13 @@
 #include "constants.hpp"
 #include "Texture.hpp"
 #include "Collisions.hpp"
+
+
 class Player{
 	public: 
 	// Dimensions of the player 
-	static const int PLAYER_WIDTH = 50;
-	static const int PLAYER_HEIGHT = 50;
+	static const int PLAYER_WIDTH = 30;
+	static const int PLAYER_HEIGHT = 30;
 
 	int PLAYER_VEL = 2;
 	// Constructors for the Player
@@ -21,7 +23,7 @@ class Player{
 	// Handle the user input from keyboard or mouse
 	void handleEvent (SDL_Event &e, SDL_Renderer* Renderer);
 	// move player in each game loop
-	void move(Tile* roads[], vector<Coin*> coinList);
+	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList);
 	// render the player according to the camera
 	void render(SDL_Rect &camera, SDL_Renderer* Renderer); 
 	// set the camera according to the player
@@ -33,6 +35,9 @@ class Player{
 	int getCoins();
 	pair<int, int> getCoordinates(){
 		return {xPos, yPos};
+	}
+	int getGifts(){
+		return gifts ;
 	}
 	// vector<SecretItem*> getItemList();
 	bool onYulu = false;
@@ -48,6 +53,7 @@ private:
 	// extra features
 	int coins = 500; 
 	int health = 100;
+	int gifts = 0;
 	// vector<SecretItem*> items; 
 
 };
@@ -145,7 +151,7 @@ SDL_Rect Player::getCollBox(){
 	return collBox; 
 }
 
-void Player::move(Tile* roads[], vector<Coin*> coinList){
+void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList){
 	//Move the dot left or right
     xPos += xVel;
     collBox.x += xVel;
@@ -168,7 +174,13 @@ void Player::move(Tile* roads[], vector<Coin*> coinList){
     	this->coins += 1;
     	cout << "Collected a coin\n";
     }
-
+    if(touchesGift(collBox, giftList)){
+    	int ind = touchesGiftIndex(collBox, giftList);
+    	int val = giftList[ind]->getValue();
+    	gifts += val;
+    	giftList[ind]->destroy();
+    	cout<<"Collected srcret item"<<" "<<val<<endl;
+    }
 }
 
 void Player::render(SDL_Rect &camera, SDL_Renderer* Renderer){
