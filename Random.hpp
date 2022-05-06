@@ -9,9 +9,9 @@ using namespace std;
 // function to constraint a number in a given range
 int constraint(int x, int lower, int upper);
 // generate a random array of given dimension (elements might repeat)
-vector<int> generateRandomArray(int n, int lower, int upper);
+vector<int> generateRandomVector(int n, int lower, int upper);
 // generate a random array of given dimension (all elements are distinct)
-vector<int> generateRandomArrayDistinct(int n, int lower, int upper);
+vector<int> generateRandomVectorDistinct(int n, int lower, int upper);
 // function to give a random integer every different time
 int getRandomInt(int lower, int upper);
 

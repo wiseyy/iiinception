@@ -4,6 +4,7 @@
 #include<iostream>
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_image.h>
+#include <utility>
 #include <fstream>
 #include "constants.hpp"
 #include "Texture.hpp"
@@ -49,8 +50,8 @@ Tile::Tile(string idx , int x, int y, int tileType){
     type = tileType;
 }
 
-pair<int, int> getCoordinates(){
-	return {collBox.x, collBox.y};
+pair<int, int> Tile::getCoordinates(){
+	return {collBox.x + collBox.w/2, collBox.y + collBox.h/2};
 }
 int Tile::getType(){
 	return type; 

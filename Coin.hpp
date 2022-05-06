@@ -4,6 +4,7 @@
 #include "SDL.h" 
 #include "SDL_image.h"
 #include <vector>
+#include <utility>
 #include "constants.hpp"
 #include "Texture.hpp"
 using namespace std; 
@@ -23,7 +24,7 @@ private:
 	SDL_Rect collBox; 
 };
 // function to generate coin objects with given x and y coordinates
-vector<Coin*> generateCoins(std::string path, vector<int> x, vector<int> y, SDL_Renderer* Renderer);
+vector<Coin*> generateCoins(std::string path, vector<pair<int, int>> coordinates , SDL_Renderer* Renderer);
 // function to render coins on the map
 void renderCoins(vector<Coin*> &coins, SDL_Rect &camera, SDL_Renderer* Renderer);
 
@@ -58,10 +59,10 @@ int Coin::getValue(){
 	return value;
 }
 
-vector<Coin*> generateCoins(std::string path, vector<int> x, vector<int> y, SDL_Renderer* Renderer){
+vector<Coin*> generateCoins(std::string path, vector<pair<int, int>> coordinates, SDL_Renderer* Renderer){
 	vector<Coin*> coins(TOTAL_COINS);
 	for(int i = 0; i<TOTAL_COINS; ++i){
-		Coin* c = new Coin(x[i], y[i], path, Renderer); 
+		Coin* c = new Coin(coordinates[i].first,coordinates[i].second, path, Renderer); 
 		coins[i] = c;
 	}
 	return coins;

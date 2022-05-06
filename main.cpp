@@ -7,6 +7,7 @@
 #include "constants.hpp"
 #include "Random.hpp"
 #include "Texture.hpp"
+#include "Coin.hpp"
 #include "Player.hpp"
 #include "TileMap.hpp"
 #include <fstream>
@@ -38,9 +39,13 @@ int main() {
 				roadCoordinates.push_back((roadMap->Map[i])->getCoordinates());
 			}
 		}
-		cout<<
-		ofstream outdata; 
-		outdata.open("roadCoordinates.txt");
+		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
+		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
+		for(int i = 0; i<TOTAL_COINS; ++i){
+			coinCoordinates[i] = roadCoordinates[coinIndices[i]];
+		}
+		vector<Coin*> coins = generateCoins("assets/coin.png", coinCoordinates, gRenderer);
+		cout<< roadCoordinates.size()<<endl;
 		cout<<"Media Loaded\n";
 		bool quit = false;
 		SDL_Event e;
@@ -53,19 +58,21 @@ int main() {
 				}
 				p1.handleEvent(e, gRenderer);
 			}
-			p1.move(roadMap->Map);
+			p1.move(roadMap->Map, coins);
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
 			mazeMap->render(camera, gRenderer);
 			roadMap->render(camera, gRenderer);
+			renderCoins(coins, camera, gRenderer);
 			p1.render(camera, gRenderer);
+
 			// t1.setDimensions(20,20);
 			// t1.render(0,0,gRenderer);
 			SDL_RenderPresent( gRenderer );
 
 			frame++ ;
 		}
-		outdata.close();
+		cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
 	}
     return 0;
 }

@@ -5,6 +5,7 @@
 #include<SDL2/SDL_image.h>
 #include <utility>
 #include "constants.hpp"
+#include "Coin.hpp"
 #include "Texture.hpp"
 #include "TileMap.hpp"
 
@@ -14,6 +15,8 @@ using namespace std;
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 // Check if a moving object collides with a wall tile
 bool touchesWall(SDL_Rect obj, Tile* buildings[], Tile* roads[]);
+// function to check if something touches a coin or not
+pair<bool, int> touchesCoin(SDL_Rect obj, vector<Coin*> &coins);
 
 // implementation of the above functions
 
@@ -58,4 +61,17 @@ bool touchesWall(SDL_Rect obj, Tile* roads[]){
 		}
 	}
 	return true;
+}
+
+pair<bool, int> touchesCoin(SDL_Rect obj, vector<Coin*> &coins){
+    for(int i = 0 ; i< TOTAL_COINS; ++i){
+        // if a collision between any coin and object then touched coin
+        if(checkCollision(obj, coins[i]->getBox())){
+            coins[i]->destroy();
+            coins[i]->setValue(0);
+            return {true, i};
+        }
+    }
+    // object touches no coin 
+    return {false, -1};
 }

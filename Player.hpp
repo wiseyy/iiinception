@@ -21,7 +21,7 @@ class Player{
 	// Handle the user input from keyboard or mouse
 	void handleEvent (SDL_Event &e, SDL_Renderer* Renderer);
 	// move player in each game loop
-	void move(Tile* roads[]);
+	void move(Tile* roads[], vector<Coin*> coinList);
 	// render the player according to the camera
 	void render(SDL_Rect &camera, SDL_Renderer* Renderer); 
 	// set the camera according to the player
@@ -145,7 +145,7 @@ SDL_Rect Player::getCollBox(){
 	return collBox; 
 }
 
-void Player::move(Tile* roads[]){
+void Player::move(Tile* roads[], vector<Coin*> coinList){
 	//Move the dot left or right
     xPos += xVel;
     collBox.x += xVel;
@@ -164,6 +164,11 @@ void Player::move(Tile* roads[]){
         yPos -= yVel;
         collBox.y -= yVel;
     }
+    if(touchesCoin(collBox, coinList).first){
+    	this->coins += 1;
+    	cout << "Collected a coin\n";
+    }
+
 }
 
 void Player::render(SDL_Rect &camera, SDL_Renderer* Renderer){
