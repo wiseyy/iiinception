@@ -10,6 +10,7 @@
 #include "Coin.hpp"
 #include "Player.hpp"
 #include "TileMap.hpp"
+#include "Gift.hpp"
 #include <fstream>
 
 using namespace std;
@@ -32,19 +33,30 @@ int main() {
 		Player p1 = Player("assets/player.png", 30*32 + 5 ,129*32+5, 0,0,gRenderer);
 		TileMap* mazeMap = new TileMap("map/map_tiles.png", MAP_TILE_TYPES,"map/map.txt","map",MAP_PIXELS_HEIGHT/TILE_HEIGHT, MAP_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
 		TileMap* roadMap = new TileMap("map/road_tiles.png", ROAD_TILE_TYPES, "map/roads.txt", "road", ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
-		// bool x = t1.loadfromFile("map/b1.png", gRenderer);
+
+		// Generating road coordinates
 		vector<pair<int, int>> roadCoordinates; 
 		for(int i = 0; i<TOTAL_TILES; ++i){
 			if ((roadMap->Map[i])->getType() != 0){
 				roadCoordinates.push_back((roadMap->Map[i])->getCoordinates());
 			}
 		}
+		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
 		for(int i = 0; i<TOTAL_COINS; ++i){
 			coinCoordinates[i] = roadCoordinates[coinIndices[i]];
 		}
 		vector<Coin*> coins = generateCoins("assets/coin.png", coinCoordinates, gRenderer);
+
+		// Generating Gifts for the map
+		vector<int> giftIndices = generateRandomVectorDistinct(TOTAL_GIFTS, 0, roadCoordinates.size()-1);
+		vector<pair<int, int>> giftCoordinates(TOTAL_GIFTS);
+		for(int i = 0; i<TOTAL_GIFTS; ++i){
+			giftCoordinates[i] = roadCoordinates[giftIndices[i]];
+		}
+		vector<Gift*> gifts = generateGifts("assets/box.png", giftCoordinates, gRenderer);
+
 		cout<< roadCoordinates.size()<<endl;
 		cout<<"Media Loaded\n";
 		bool quit = false;
@@ -64,6 +76,7 @@ int main() {
 			mazeMap->render(camera, gRenderer);
 			roadMap->render(camera, gRenderer);
 			renderCoins(coins, camera, gRenderer);
+			renderGifts(gifts, camera, gRenderer);
 			p1.render(camera, gRenderer);
 
 			// t1.setDimensions(20,20);
