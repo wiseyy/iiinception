@@ -74,7 +74,7 @@ void Gift::render(SDL_Rect &camera, SDL_Renderer* Renderer){
 vector<Gift*> generateGifts(std::string path, vector<pair<int, int>> coordinates, SDL_Renderer* Renderer){
 	vector<Gift*> items(TOTAL_GIFTS);
 	for(int i = 0; i<TOTAL_GIFTS; ++i){
-		Gift* c = new Gift( uid(10, 20) ,coordinates[i].first, coordinates[i].second, path, Renderer); 
+		Gift* c = new Gift( uid(10, 100) ,coordinates[i].first, coordinates[i].second, path, Renderer); 
 		items[i] = c;
 	}
 	return items;
