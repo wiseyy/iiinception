@@ -8,6 +8,7 @@
 #include "Random.hpp"
 #include "Texture.hpp"
 #include "Player.hpp"
+#include "TileMap.hpp"
 using namespace std;
 
 int main() {
@@ -23,9 +24,12 @@ int main() {
 	else{
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
-		Texture t1 = Texture();
-		Player p1 = Player("assets/player.jpg", 0, 0, 0,0,gRenderer);
-		bool x = t1.loadfromFile("map/b1.png", gRenderer);
+		// Texture t1 = Texture();
+		// Texture map = Texture("assets/map.")
+		Player p1 = Player("assets/player.png", 0, 0, 0,0,gRenderer);
+		TileMap* mazeMap = new TileMap("map/map_tiles.png", MAP_TILE_TYPES,"map/map.txt","map",MAP_PIXELS_HEIGHT/32, MAP_PIXELS_WIDTH/32, gRenderer);
+		TileMap* roadMap = new TileMap("map/road_tiles.png", ROAD_TILE_TYPES, "map/roads.txt", "road", ROAD_PIXELS_HEIGHT/32, ROAD_PIXELS_WIDTH/32,gRenderer);
+		// bool x = t1.loadfromFile("map/b1.png", gRenderer);
 		cout<<"Media Loaded\n";
 		bool quit = false;
 		SDL_Event e;
@@ -41,9 +45,11 @@ int main() {
 			p1.move();
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
+			mazeMap->render(camera, gRenderer);
+			roadMap->render(camera, gRenderer);
 			p1.render(camera, gRenderer);
-			t1.setDimensions(20,20);
-			t1.render(0,0,gRenderer);
+			// t1.setDimensions(20,20);
+			// t1.render(0,0,gRenderer);
 			SDL_RenderPresent( gRenderer );
 		}
 	}
