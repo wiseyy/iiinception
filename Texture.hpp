@@ -24,7 +24,7 @@ public:
 	void setDimensions(int w, int h);
 	void setTexture(SDL_Texture* tex); 
 	// render the texture
-	void render(int x, int y, SDL_Renderer* gRenderer, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
+	void render(int x, int y, SDL_Renderer* gRenderer);
 private:
 	int height;
 	int width;
@@ -56,9 +56,6 @@ bool Texture::loadfromFile( std::string path , SDL_Renderer* gRenderer){
 		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 	else{
-		// //Color key image
-		// SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
-
 		//Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
 		if( newTexture == NULL ){
@@ -111,18 +108,24 @@ void Texture::setTexture(SDL_Texture* tex){
 	texture = tex;
 }
 // Render the texture
-void Texture::render(int x,int y, SDL_Renderer* gRenderer, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip){
+// void Texture::render(int x,int y, SDL_Renderer* gRenderer, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip){
+	// //Set rendering space and render to screen
+	// SDL_Rect renderQuad = {x, y, width, height};
+
+	// //Set clip rendering dimensions
+	// if(clip != NULL)
+	// {
+	// 	renderQuad.w = clip->w;
+	// 	renderQuad.h = clip->h;
+	// }
+
+// 	//Render to screen
+// 	SDL_RenderCopyEx( gRenderer, texture, clip, &renderQuad, angle, center, flip );
+// }
+
+void Texture::render(int x, int y, SDL_Renderer* gRenderer){
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = {x, y, width, height};
-
-	//Set clip rendering dimensions
-	if(clip != NULL)
-	{
-		renderQuad.w = clip->w;
-		renderQuad.h = clip->h;
-	}
-
-	//Render to screen
-	SDL_RenderCopyEx( gRenderer, texture, clip, &renderQuad, angle, center, flip );
+	// 	//Render to screen
+	SDL_RenderCopy( gRenderer, texture, NULL, &renderQuad);
 }
-
