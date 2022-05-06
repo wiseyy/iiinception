@@ -33,7 +33,7 @@ const int ROAD_TILE_TYPES = ROAD_PIXELS_HEIGHT/32 * ROAD_PIXELS_WIDTH/32;
 const int COIN_WIDTH = 20; 
 const int COIN_HEIGHT = 20; 
 
-const int TOTAL_COINS = 50; 
+const int TOTAL_COINS = 300; 
 
 // Item Dimensions
 const int ITEM_WIDTH = 15;

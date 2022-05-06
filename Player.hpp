@@ -7,21 +7,21 @@
 #include<vector>
 #include "constants.hpp"
 #include "Texture.hpp"
-
+#include "Collisions.hpp"
 class Player{
 	public: 
 	// Dimensions of the player 
 	static const int PLAYER_WIDTH = 50;
 	static const int PLAYER_HEIGHT = 50;
 
-	int PLAYER_VEL = 5;
+	int PLAYER_VEL = 2;
 	// Constructors for the Player
 	Player(); 
 	Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Renderer);
 	// Handle the user input from keyboard or mouse
 	void handleEvent (SDL_Event &e, SDL_Renderer* Renderer);
 	// move player in each game loop
-	void move();
+	void move(Tile* roads[], vector<Coin*> coinList);
 	// render the player according to the camera
 	void render(SDL_Rect &camera, SDL_Renderer* Renderer); 
 	// set the camera according to the player
@@ -31,6 +31,9 @@ class Player{
 	void getOnYulu(SDL_Renderer* Renderer);
 	void getOffYulu(SDL_Renderer* Renderer);
 	int getCoins();
+	pair<int, int> getCoordinates(){
+		return {xPos, yPos};
+	}
 	// vector<SecretItem*> getItemList();
 	bool onYulu = false;
 private:
@@ -122,12 +125,10 @@ void Player::setCamera(SDL_Rect &camera){
 	camera.y = ( collBox.y + PLAYER_HEIGHT / 2 ) - SCREEN_HEIGHT / 2;
 
 	//Keep the camera in bounds
-	if( camera.x < 0 )
-	{ 
+	if( camera.x < 0 ){ 
 		camera.x = 0;
 	}
-	if( camera.y < 0 )
-	{
+	if( camera.y < 0 ){
 		camera.y = 0;
 	}
 	if( camera.x > MAP_WIDTH - camera.w )
@@ -144,12 +145,12 @@ SDL_Rect Player::getCollBox(){
 	return collBox; 
 }
 
-void Player::move(){
+void Player::move(Tile* roads[], vector<Coin*> coinList){
 	//Move the dot left or right
     xPos += xVel;
     collBox.x += xVel;
     //If the dot went too far to the left or right
-    if( ( xPos < 0 ) || ( xPos + PLAYER_WIDTH > MAP_WIDTH )){
+    if( ( xPos < 0 ) || ( xPos + PLAYER_WIDTH > MAP_WIDTH ) || touchesWall(collBox, roads)){
         //Move back
         xPos -= xVel;
         collBox.x -= xVel; 
@@ -158,11 +159,16 @@ void Player::move(){
     yPos += yVel;
     collBox.y += yVel;
     //If the dot went too far up or down
-    if( ( yPos < 0 ) || ( yPos + PLAYER_HEIGHT > MAP_HEIGHT )){
+    if( ( yPos < 0 ) || ( yPos + PLAYER_HEIGHT > MAP_HEIGHT ) || touchesWall(collBox, roads)){
         //Move back
         yPos -= yVel;
         collBox.y -= yVel;
     }
+    if(touchesCoin(collBox, coinList).first){
+    	this->coins += 1;
+    	cout << "Collected a coin\n";
+    }
+
 }
 
 void Player::render(SDL_Rect &camera, SDL_Renderer* Renderer){
