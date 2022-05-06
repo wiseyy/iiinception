@@ -91,20 +91,16 @@ void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
             case SDLK_LEFT: xVel += PLAYER_VEL; break;
             case SDLK_RIGHT: xVel -= PLAYER_VEL; break;
         }
-        if (xVel == 0 && yVel == 0){
-        	dir = -1;
-        }
-        
     }
     else if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
     {
         //Adjust the velocity or handle the events
         switch( e.key.keysym.sym )
         {
-            case SDLK_UP: yVel -= PLAYER_VEL; dir = 1; break;
-            case SDLK_DOWN: yVel += PLAYER_VEL; dir = 0; break;
-            case SDLK_LEFT: xVel -= PLAYER_VEL; dir = 2;break;
-            case SDLK_RIGHT: xVel += PLAYER_VEL; dir = 3; break;
+            case SDLK_UP: yVel -= PLAYER_VEL; break;
+            case SDLK_DOWN: yVel += PLAYER_VEL; break;
+            case SDLK_LEFT: xVel -= PLAYER_VEL;break;
+            case SDLK_RIGHT: xVel += PLAYER_VEL; break;
             case SDLK_p:
             	cout<<"Pressed P\n";
 	        	cout<<PLAYER_VEL<<endl;
@@ -129,6 +125,22 @@ void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
 
         }
     }
+
+    if (xVel == 0 && yVel == 0){
+        	dir = -1;
+        }
+        if (yVel < 0){
+        	dir = 1;
+        }
+        else if(yVel > 0){
+        	dir = 0;
+        }
+        else if(xVel > 0){
+        	dir = 3;
+        }
+        else if (xVel < 0){
+        	dir = 2;
+        }
 }
 
 void Player::setCamera(SDL_Rect &camera){

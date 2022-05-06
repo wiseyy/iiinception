@@ -29,8 +29,10 @@ int main() {
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
 		
+		// Frame Rate 
+		Uint32 frameStart = 60; 
+		int frameTime; 
 		// Generating different layers of our tilemap
-		
 		TileMap* collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES,"map/sdl_stuff/collision.txt","collision",COLL_PIXELS_HEIGHT/TILE_HEIGHT, COLL_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
 		TileMap* below_roadMap = new TileMap("map/sdl_stuff/below_road_tiles.png", BELOW_ROAD_TILE_TYPES, "map/sdl_stuff/below_road.txt", "below_road", BELOW_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, BELOW_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
 		TileMap* roadMap = new TileMap("map/sdl_stuff/road_tiles.png", ROAD_TILE_TYPES, "map/sdl_stuff/road.txt", "road", ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
@@ -68,6 +70,8 @@ int main() {
 		SDL_Event e;
 		int frame = 0;
 		while(!quit){
+			frameStart = SDL_GetTicks();
+
 			while(SDL_PollEvent(&e) != 0){
 				if( e.type == SDL_QUIT ){
 						quit = true;
@@ -85,7 +89,7 @@ int main() {
 			trashMap->render(camera, gRenderer);
 			renderCoins(coins, camera, gRenderer);
 			renderGifts(gifts, camera, gRenderer);
-			p1.render(camera, frame%600, gRenderer);
+			p1.render(camera, frame%6, gRenderer);
 			
 			
 
@@ -93,7 +97,11 @@ int main() {
 			// t1.render(0,0,gRenderer);
 			SDL_RenderPresent( gRenderer );
 
-			frame++ ;
+			frameTime = SDL_GetTicks() - frameStart;
+			if(frameDelay > frameTime){
+				SDL_Delay(frameDelay - frameTime);
+			}
+			frame++;
 		}
 		cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
 	}

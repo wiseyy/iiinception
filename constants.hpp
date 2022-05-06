@@ -1,5 +1,9 @@
 #pragma once
 
+// frame Rate 
+const int FPS = 60;
+const int frameDelay = 1000/FPS ;
+
 //Screen dimensions
 const int SCREEN_WIDTH = 1440;
 const int SCREEN_HEIGHT = 960;
