@@ -1,0 +1,24 @@
+{ "columns":0,
+ "grid":
+    {
+     "height":1,
+     "orientation":"orthogonal",
+     "width":1
+    },
+ "margin":0,
+ "name":"school",
+ "spacing":0,
+ "tilecount":1,
+ "tiledversion":"1.8.4",
+ "tileheight":318,
+ "tiles":[
+        {
+         "id":0,
+         "image":"school.png",
+         "imageheight":318,
+         "imagewidth":350
+        }],
+ "tilewidth":350,
+ "type":"tileset",
+ "version":"1.8"
+}

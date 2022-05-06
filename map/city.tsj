@@ -1,0 +1,14 @@
+{ "columns":62,
+ "image":"city.webp",
+ "imageheight":1500,
+ "imagewidth":2000,
+ "margin":0,
+ "name":"city",
+ "spacing":0,
+ "tilecount":2852,
+ "tiledversion":"1.8.4",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.8"
+}

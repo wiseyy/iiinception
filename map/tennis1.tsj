@@ -1,0 +1,24 @@
+{ "columns":0,
+ "grid":
+    {
+     "height":1,
+     "orientation":"orthogonal",
+     "width":1
+    },
+ "margin":0,
+ "name":"tennis",
+ "spacing":0,
+ "tilecount":1,
+ "tiledversion":"1.8.4",
+ "tileheight":306,
+ "tiles":[
+        {
+         "id":0,
+         "image":"tennis1.jpg",
+         "imageheight":306,
+         "imagewidth":612
+        }],
+ "tilewidth":612,
+ "type":"tileset",
+ "version":"1.8"
+}
