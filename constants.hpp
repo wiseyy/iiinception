@@ -1,19 +1,29 @@
 #pragma once
 
 //Screen dimensions
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
-// Field Dimensions
-const int MAP_WIDTH = 1280;
-const int MAP_HEIGHT = 960;
+const int SCREEN_WIDTH = 1440;
+const int SCREEN_HEIGHT = 960;
 
 //Tile constants
-const int TILE_WIDTH = 80;
-const int TILE_HEIGHT = 80;
-const int TOTAL_TILE_TYPES = 4; 
+const int TILE_WIDTH = 32;
+const int TILE_HEIGHT = 32;
+const int numCols = 380;
+const int numRows = 170; 
+
+// Field Dimensions
+const int MAP_WIDTH = TILE_WIDTH*numCols;
+const int MAP_HEIGHT = TILE_HEIGHT*numRows;
+
 const int TOTAL_TILES = MAP_WIDTH/TILE_WIDTH* MAP_HEIGHT/TILE_HEIGHT ;
 
+
+const int MAP_PIXELS_HEIGHT = 2624;
+const int MAP_PIXELS_WIDTH = 2688;
+const int MAP_TILE_TYPES = MAP_PIXELS_HEIGHT/32 * MAP_PIXELS_WIDTH/32;
+
+const int ROAD_PIXELS_WIDTH = 384;
+const int ROAD_PIXELS_HEIGHT = 352; 
+const int ROAD_TILE_TYPES = ROAD_PIXELS_HEIGHT/32 * ROAD_PIXELS_WIDTH/32;
 // const int GRASS = 0;
 // const int WATER = 1;
 // const int ROAD = 2;
