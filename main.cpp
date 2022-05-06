@@ -45,7 +45,7 @@ int main() {
 			}
 		}
 		// generating player on the road
-		Player p1 = Player("assets/player.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+		Player p1 = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
 		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
@@ -85,7 +85,7 @@ int main() {
 			trashMap->render(camera, gRenderer);
 			renderCoins(coins, camera, gRenderer);
 			renderGifts(gifts, camera, gRenderer);
-			p1.render(camera, gRenderer);
+			p1.render(camera, frame%600, gRenderer);
 			
 			
 

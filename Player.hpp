@@ -25,7 +25,7 @@ class Player{
 	// move player in each game loop
 	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList);
 	// render the player according to the camera
-	void render(SDL_Rect &camera, SDL_Renderer* Renderer); 
+	void render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer); 
 	// set the camera according to the player
 	void setCamera( SDL_Rect& camera );
 	// get the collBox for the player
@@ -41,13 +41,14 @@ class Player{
 	}
 	// vector<SecretItem*> getItemList();
 	bool onYulu = false;
+	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
 private:
 	// Position of the player
 	int xPos, yPos;
 	// Velocity of the player
 	int xVel, yVel;
 	// Texture attribute for rendering
-	Texture PlayerTex;
+	Texture SpriteTex;
 	// Collision Box for the player
 	SDL_Rect collBox;
 	// extra features
@@ -61,8 +62,8 @@ private:
 Player::Player(){
 	collBox = {0,0,PLAYER_WIDTH, PLAYER_HEIGHT};
 	xPos = yPos = xVel = yVel = 0; 
-	PlayerTex.setTexture(NULL);
-	PlayerTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+	SpriteTex.setTexture(NULL);
+	SpriteTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
 }
 
 Player::Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Renderer){
@@ -71,49 +72,17 @@ Player::Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Ren
 	yPos = y;
 	xVel = vx;
 	yVel = vy;
-	if(!PlayerTex.loadfromFile(path, Renderer))
+	if(!SpriteTex.loadfromFile(path, Renderer))
 	{
 		printf( "Failed to load Player texture!\n" );
 	} 
-	PlayerTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+	// SpriteTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
 }
 
 void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
     //If a key was pressed
-    if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-    {
-        //Adjust the velocity or handle the events
-        switch( e.key.keysym.sym )
-        {
-            case SDLK_UP: yVel -= PLAYER_VEL; break;
-            case SDLK_DOWN: yVel += PLAYER_VEL; break;
-            case SDLK_LEFT: xVel -= PLAYER_VEL; break;
-            case SDLK_RIGHT: xVel += PLAYER_VEL; break;
-            case SDLK_p:
-            	cout<<"Pressed P\n";
-	        	cout<<PLAYER_VEL<<endl;
-	        	if (onYulu == false){
-	        		PLAYER_VEL  = 7.5;
-	        		cout<<PLAYER_VEL<<endl;
-					onYulu = true; 
-					if(!PlayerTex.loadfromFile("assets/riding.png", Renderer)){
-						cout<<"Could load riding picture\n";
-					}
-					PlayerTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-	        	}
-	        	else{
-	        		PLAYER_VEL = 5;
-	        		onYulu = false;
-	        		if(!PlayerTex.loadfromFile("assets/body.png", Renderer)){
-						cout<<"Could load get off yulu picture\n";
-					}
-					PlayerTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-	        	}
-	        	break;
-
-        }
-    }
-    else if ( e.type == SDL_KEYUP && e.key.repeat == 0 ){
+    
+    if ( e.type == SDL_KEYUP && e.key.repeat == 0 ){
     	//Adjust the velocity
         switch( e.key.keysym.sym )
         {
@@ -121,6 +90,43 @@ void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
             case SDLK_DOWN: yVel -= PLAYER_VEL; break;
             case SDLK_LEFT: xVel += PLAYER_VEL; break;
             case SDLK_RIGHT: xVel -= PLAYER_VEL; break;
+        }
+        if (xVel == 0 && yVel == 0){
+        	dir = -1;
+        }
+        
+    }
+    else if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
+    {
+        //Adjust the velocity or handle the events
+        switch( e.key.keysym.sym )
+        {
+            case SDLK_UP: yVel -= PLAYER_VEL; dir = 1; break;
+            case SDLK_DOWN: yVel += PLAYER_VEL; dir = 0; break;
+            case SDLK_LEFT: xVel -= PLAYER_VEL; dir = 2;break;
+            case SDLK_RIGHT: xVel += PLAYER_VEL; dir = 3; break;
+            case SDLK_p:
+            	cout<<"Pressed P\n";
+	        	cout<<PLAYER_VEL<<endl;
+	    //     	if (onYulu == false){
+	    //     		PLAYER_VEL  = 7.5;
+	    //     		cout<<PLAYER_VEL<<endl;
+					// onYulu = true; 
+					// if(!PlayerTex.loadfromFile("assets/riding.png", Renderer)){
+					// 	cout<<"Could load riding picture\n";
+					// }
+					// PlayerTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+	    //     	}
+	    //     	else{
+	    //     		PLAYER_VEL = 5;
+	    //     		onYulu = false;
+	    //     		if(!PlayerTex.loadfromFile("assets/body.png", Renderer)){
+					// 	cout<<"Could load get off yulu picture\n";
+					// }
+					// PlayerTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+	    //     	}
+	        	break;
+
         }
     }
 }
@@ -183,8 +189,28 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     }
 }
 
-void Player::render(SDL_Rect &camera, SDL_Renderer* Renderer){
-	PlayerTex.render(xPos - camera.x, yPos - camera.y, Renderer) ;
+void Player::render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer){
+	SDL_Rect clip; 
+	if (dir == 0){
+		clip = {frame%4 * SpriteTex.getWidth()/4, 0, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+	}
+	else if (dir == 1){
+		clip = {frame%3 * SpriteTex.getWidth()/4, SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+	}
+	else if (dir == 2){
+		clip = {frame%4* SpriteTex.getWidth()/4, 2*SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+	}
+	else if (dir == 3){
+		clip = {frame%4 * SpriteTex.getWidth()/4, 3*SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+	} 
+	else{
+		clip = {0, 0, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+	}
+	SDL_Rect PlayerRect = {xPos - camera.x, yPos - camera.y,PLAYER_WIDTH, PLAYER_HEIGHT};
+	// SpriteTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
+	// SDL_RenderCopy( gRenderer, texture, NULL, &renderQuad);
+	SDL_RenderCopy(Renderer, SpriteTex.getTexture(), &clip, &PlayerRect);
+	// SpriteTex.renderSprite(xPos - camera.x, yPos - camera.y, Renderer, &clip) ;
 }
 
 int Player::getCoins(){
