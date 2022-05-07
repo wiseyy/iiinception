@@ -87,7 +87,7 @@ Prof::Prof(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Rendere
 	{
 		printf( "Failed to load Prof texture!\n" );
 	} 
-	anger = getRandomInt(5, 30);
+	anger = getRandomInt(5, 10);
 }
 
 SDL_Rect Prof::getBox(){
