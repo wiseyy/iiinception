@@ -220,6 +220,17 @@ int main(int argc, char *argv[])
 
 				frameStart = SDL_GetTicks();
 
+				SDL_RenderClear(gRenderer);
+				collisionMap->render(camera, gRenderer);
+				below_roadMap->render(camera, gRenderer);
+				roadMap->render(camera, gRenderer);
+				above_roadMap->render(camera, gRenderer);
+				trashMap->render(camera, gRenderer);
+				renderProfs(profsX, frame, camera, gRenderer);
+				// renderProfs(profsY, frame, camera, gRenderer);
+				renderGifts(gifts, camera, gRenderer);
+				renderCoins(coins, camera, gRenderer);
+				renderTrash(trash, camera, gRenderer);
 				while (SDL_PollEvent(&e) != 0)
 				{
 					if (e.type == SDL_QUIT)
@@ -233,17 +244,8 @@ int main(int argc, char *argv[])
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				p1.setCamera(camera);
-				SDL_RenderClear(gRenderer);
-				collisionMap->render(camera, gRenderer);
-				below_roadMap->render(camera, gRenderer);
-				roadMap->render(camera, gRenderer);
-				above_roadMap->render(camera, gRenderer);
-				trashMap->render(camera, gRenderer);
-				renderProfs(profsX, frame, camera, gRenderer);
-				// renderProfs(profsY, frame, camera, gRenderer);
-				renderGifts(gifts, camera, gRenderer);
-				renderCoins(coins, camera, gRenderer);
-				renderTrash(trash, camera, gRenderer);
+				
+				
 				p1.render(camera, frame % 6, gRenderer);
 				p2.renderCam(camera, frame%6, gRenderer);
 				// t1.setDimensions(20,20);
@@ -274,7 +276,17 @@ int main(int argc, char *argv[])
 				// 		// p2.set(param);
 
 				frameStart = SDL_GetTicks();
-
+				SDL_RenderClear(gRenderer);
+				collisionMap->render(camera, gRenderer);
+				below_roadMap->render(camera, gRenderer);
+				roadMap->render(camera, gRenderer);
+				above_roadMap->render(camera, gRenderer);
+				trashMap->render(camera, gRenderer);
+				renderProfs(profsX, frame, camera, gRenderer);
+				// renderProfs(profsY, frame, camera, gRenderer);
+				renderGifts(gifts, camera, gRenderer);
+				renderCoins(coins, camera, gRenderer);
+				renderTrash(trash, camera, gRenderer);
 				while (SDL_PollEvent(&e) != 0)
 				{
 					if (e.type == SDL_QUIT)
@@ -288,17 +300,7 @@ int main(int argc, char *argv[])
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				p2.setCamera(camera);
-				SDL_RenderClear(gRenderer);
-				collisionMap->render(camera, gRenderer);
-				below_roadMap->render(camera, gRenderer);
-				roadMap->render(camera, gRenderer);
-				above_roadMap->render(camera, gRenderer);
-				trashMap->render(camera, gRenderer);
-				renderProfs(profsX, frame, camera, gRenderer);
-				// renderProfs(profsY, frame, camera, gRenderer);
-				renderGifts(gifts, camera, gRenderer);
-				renderCoins(coins, camera, gRenderer);
-				renderTrash(trash, camera, gRenderer);
+				
 				p2.render(camera, frame % 6, gRenderer);
 				p1.renderCam(camera, frame%6, gRenderer);
 				// t1.setDimensions(20,20);

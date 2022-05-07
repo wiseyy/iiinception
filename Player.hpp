@@ -251,8 +251,14 @@ void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, Tile* trashTil
 	        	// at the station and not having yulu
 	        	if(!onYulu && onStation){
 	        		getOnYulu(Renderer);
+	        		string ev =  "Yulu Picked";
+	       			Texture evt = displayEvent(ev,Renderer);
+	       			evt.render(35,0, Renderer);
 	        	}
 	        	else if (onYulu){
+	        		string ev =  "Yulu Dropped";
+	       			Texture evt = displayEvent(ev,Renderer);
+	       			evt.render(35,0, Renderer);
 	        		getOffYulu(Renderer);
 	        	}
 	        	break;
@@ -265,7 +271,7 @@ void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, Tile* trashTil
 	       	{
 	       		bool onTrashCan = false ;
 	       		// check if player touches any trash can
-	       		SDL_Rect obj = {collBox.x - 7, collBox.y - 7, collBox.w + 14, collBox.h + 14};
+	       		SDL_Rect obj = {collBox.x - 10, collBox.y - 10, collBox.w + 20, collBox.h + 20};
 	       		onTrashCan = touchesTrashCan(obj, trashTiles);
 	       		if(trash > 0 && trash <= 10 && onTrashCan){
 	       			thrown = trash ;
@@ -273,13 +279,13 @@ void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, Tile* trashTil
 					coins += 10 ;
 	       			string ev =  "Trash Thrown \n";
 	       			Texture evt = displayEvent(ev,Renderer);
-	       			evt.render(0,SCREEN_HEIGHT-35, Renderer);
+	       			evt.render(35,0, Renderer);
 	       			sounds["throw"]->play(0);
 	       		}
 	       		else{
 	       			string ev = "Collect some garbage to throw in the trash can\n";
 	       			Texture evt = displayEvent(ev,Renderer);
-	       			evt.render(0,SCREEN_HEIGHT-35, Renderer);
+	       			evt.render(0,35, Renderer);
 	       		}
 	       	}
     	}
