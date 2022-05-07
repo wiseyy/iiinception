@@ -24,7 +24,7 @@ class Player{
 	// Handle the user input from keyboard or mouse
 	void handleEvent (SDL_Event &e, SDL_Renderer* Renderer);
 	// move player in each game loop
-	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, unordered_map<string, SoundEffect*> &sounds);
+	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer);
 	// render the player according to the camera
 	void render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer); 
 	// set the camera according to the player
@@ -43,6 +43,7 @@ class Player{
 	// vector<SecretItem*> getItemList();
 	bool onYulu = false;
 	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
+	int yuluTimer = 0;
 private:
 	// Position of the player
 	int xPos, yPos;
@@ -80,9 +81,9 @@ Player::Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Ren
 	// SpriteTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
 }
 
+
 void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
     //If a key was pressed
-    
     if ( e.type == SDL_KEYUP && e.key.repeat == 0 ){
     	//Adjust the velocity
         switch( e.key.keysym.sym )
@@ -102,25 +103,28 @@ void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
             case SDLK_DOWN: yVel += PLAYER_VEL; break;
             case SDLK_LEFT: xVel -= PLAYER_VEL;break;
             case SDLK_RIGHT: xVel += PLAYER_VEL; break;
-            case SDLK_RETURN:
+            
+        }
+    }
+
+
+    if(e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
+    	switch(e.key.keysym.sym){
+    		case SDLK_RETURN:
             	cout<<"Pressed P\n";
 	        	cout<<PLAYER_VEL<<endl;
 	        	if(onYulu == false){
-	        		onYulu = true;
-	        		PLAYER_VEL += 5;
-	        		if(!SpriteTex.loadfromFile("assets/yulub.png", Renderer)){
-						cout<<"Could load get off yulu picture\n";
-					}
+	        		getOnYulu(Renderer);
 	        	}
 	        	else{
-	        		onYulu = false;
-	        		PLAYER_VEL = 5;
-	        		if(!SpriteTex.loadfromFile("assets/boy.png", Renderer)){
-						cout<<"Could load get off yulu picture\n";
-					}
+	        		getOffYulu(Renderer);
 	        	}
 	        	break;
-        }
+	       	case SDLK_p :
+	       		xVel = 0;
+	       		yVel = 0;
+	       		break;
+    	}
     }
 
     if (xVel == 0 && yVel == 0){
@@ -166,7 +170,20 @@ SDL_Rect Player::getCollBox(){
 	return collBox; 
 }
 
-void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, unordered_map<string, SoundEffect*> &sounds){
+void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer){
+	// yulu Timer checks if player needs to get off yulu
+    if (onYulu){
+    	if(yuluTimer < 600){
+    		yuluTimer += 1;
+    		cout<<yuluTimer<<endl;
+    	}
+    	else{ 
+    		yuluTimer = 0;
+    		getOffYulu(Renderer);
+    		SDL_Delay(200);  		
+    	}
+    }
+
 	//Move the dot left or right
     xPos += xVel;
     collBox.x += xVel;
@@ -247,4 +264,24 @@ void Player::render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer){
 
 int Player::getCoins(){
 	return coins; 
+}
+
+void Player::getOffYulu(SDL_Renderer* Renderer){
+	if(onYulu){
+		onYulu = false;
+		PLAYER_VEL = 5;
+		if(!SpriteTex.loadfromFile("assets/boy.png", Renderer)){
+			cout<<"Could load get on yulu picture\n";
+		}
+	}
+}
+
+void Player::getOnYulu(SDL_Renderer* Renderer){
+	if(!onYulu){
+		onYulu = true;
+		PLAYER_VEL += 5;
+		if(!SpriteTex.loadfromFile("assets/yulub.png", Renderer)){
+			cout<<"Could load get off yulu picture\n";
+		}
+	}
 }

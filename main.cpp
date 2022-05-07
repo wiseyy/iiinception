@@ -92,7 +92,7 @@ int main() {
 				}
 				p1.handleEvent(e, gRenderer);
 			}
-			p1.move(roadMap->Map, coins, gifts, soundHashMap);
+			p1.move(roadMap->Map, coins, gifts, soundHashMap, gRenderer);
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
 			collisionMap->render(camera, gRenderer);
