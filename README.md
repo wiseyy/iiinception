@@ -56,8 +56,6 @@ Pick garbage and throw in trashcans to earn bonus points for cleaning the campus
 
 Make sure to avoid angry professors otherwise they will lower your (mental) health!
 
-## Pointing System
-
 ## Useful Links
 * To get the complete details of the project see [Task2 - SubTask1](https://www.cse.iitd.ac.in/~rijurekha/cop290_2022.html)
 * For SDL tutorials we used [Lazy Foo Tutorials](https://lazyfoo.net/tutorials/SDL/index.php) and the [Youtube Playlist](https://www.youtube.com/watch?v=QQzAHcojEKg&list=RDCMUCAM9ZPgEIdeHAsmG50wqL1g&start_radio=1&rv=QQzAHcojEKg&t=0)
