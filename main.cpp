@@ -65,6 +65,9 @@ int16_t my_id = -1;
 // }
 
 void loadYuluStations(vector<SDL_Rect> &yulus);
+void loadAllEatingPoints(vector<SDL_Rect> &eatingPoints, unordered_map<string, SDL_Rect> &loc);
+void makeLocationHashMap(unordered_map<string, SDL_Rect> &loc);
+void loadAllHostels(vector<SDL_Rect> &hostels, unordered_map<string, SDL_Rect> &loc);
 
 int main(int argc, char *argv[])
 {
@@ -101,10 +104,17 @@ int main(int argc, char *argv[])
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
+		unordered_map<string, SDL_Rect> loc ;
+		makeLocationHashMap(loc);
 		// Marking the yulu stations
 		vector<SDL_Rect> yulus(8);
 		loadYuluStations(yulus);
+		// eating points 
+		vector<SDL_Rect> eatingPoints(18);
+		loadAllEatingPoints(eatingPoints, loc);
 
+		vector<SDL_Rect> hostels(20);
+		loadAllHostels(hostels, loc);
 		// vector<SDL_Rect> hostels();
 		// Frame Rate
 		Uint32 frameStart = 60;
@@ -219,7 +229,8 @@ int main(int argc, char *argv[])
 				// to_client(mess);
 
 				frameStart = SDL_GetTicks();
-
+				Texture meter = p1.display(gRenderer);
+				Texture ev1 = p1.displayEvent(eventHappened, gRenderer);
 				SDL_RenderClear(gRenderer);
 				collisionMap->render(camera, gRenderer);
 				below_roadMap->render(camera, gRenderer);
@@ -238,20 +249,24 @@ int main(int argc, char *argv[])
 						quit = true;
 						cout << "Now Quitting....\n";
 					}
-					p1.handleEvent(e, yulus, trashMap->Map, soundHashMap, gRenderer);
+					p1.handleEvent(e, yulus, hostels, eatingPoints,  trashMap->Map, soundHashMap, gRenderer);
 				}
 				p1.move(roadMap->Map, coins, gifts, profsX,trash, soundHashMap, gRenderer);
+				meter.render(0, 0, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				p1.setCamera(camera);
 				
-				
 				p1.render(camera, frame % 6, gRenderer);
+				
 				p2.renderCam(camera, frame%6, gRenderer);
 				// t1.setDimensions(20,20);
 				// t1.render(0,0,gRenderer);
+				
+				ev1.render(0, 35, gRenderer);
 				SDL_RenderPresent(gRenderer);
-
+				meter.free();
+				ev1.free();
 				// reset angry attribute of profs after some frames
 				if (frame % 600 == 0)
 				{
@@ -259,6 +274,13 @@ int main(int argc, char *argv[])
 					{
 						prof->setAnger(getRandomInt(5, 30));
 					}
+				}
+				if(frame %120 == 0 && !p1.onYulu){
+					p1.health -= 1;
+					p1.happiness -= 1;
+				}
+				if(frame%60 == 0){
+					eventHappened = "";
 				}
 				frameTime = SDL_GetTicks() - frameStart;
 				if (frameDelay > frameTime)
@@ -276,6 +298,8 @@ int main(int argc, char *argv[])
 				// 		// p2.set(param);
 
 				frameStart = SDL_GetTicks();
+				Texture meter = p2.display(gRenderer);
+				Texture ev2 = p2.displayEvent(eventHappened, gRenderer);
 				SDL_RenderClear(gRenderer);
 				collisionMap->render(camera, gRenderer);
 				below_roadMap->render(camera, gRenderer);
@@ -294,7 +318,7 @@ int main(int argc, char *argv[])
 						quit = true;
 						cout << "Now Quitting....\n";
 					}
-					p2.handleEvent(e, yulus,trashMap->Map,soundHashMap,  gRenderer);
+					p2.handleEvent(e, yulus,hostels, eatingPoints, trashMap->Map,soundHashMap,  gRenderer);
 				}
 				p2.move(roadMap->Map, coins, gifts, profsX,trash, soundHashMap, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
@@ -303,10 +327,15 @@ int main(int argc, char *argv[])
 				
 				p2.render(camera, frame % 6, gRenderer);
 				p1.renderCam(camera, frame%6, gRenderer);
+				meter.render(0, 0, gRenderer);
 				// t1.setDimensions(20,20);
 				// t1.render(0,0,gRenderer);
-				SDL_RenderPresent(gRenderer);
 
+				
+				ev2.render(0, 35, gRenderer);
+				SDL_RenderPresent(gRenderer);
+				meter.free();
+				ev2.free();
 				// reset angry attribute of profs after some frames
 				if (frame % 600 == 0)
 				{
@@ -315,12 +344,51 @@ int main(int argc, char *argv[])
 						prof->setAnger(getRandomInt(5, 30));
 					}
 				}
+				if(frame%60 == 0){
+					eventHappened = "No Event";
+				}
+				if(frame %120 == 0 && !p2.onYulu){
+					p2.health -= 1;
+					p2.happiness -= 1;
+				}
 				frameTime = SDL_GetTicks() - frameStart;
 				if (frameDelay > frameTime)
 				{
 					SDL_Delay(frameDelay - frameTime);
 				}
 				frame++;
+			}
+
+			if(frame >= 60*5){
+				Texture lose1 , win1;
+				bool x1 = lose1.loadfromFile("assets/lose.jpg", gRenderer);
+				bool x2 = win1.loadfromFile("assets/win.jpg", gRenderer);
+				// lose1.setDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
+				// win1.setDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
+				int score1 = p1.getScore();
+				int score2 = p2.getScore();
+				cout << "P1 : " << score1 <<endl;
+				cout << "P2 : " << score2 <<endl;
+				if(score1 > score2){
+					cout<< "Player1 wins\n" ;
+					if(client){
+						lose1.render(0, 0, gRenderer);
+					}
+					else{
+						win1.render(0, 0, gRenderer);
+					}
+				}
+				else{
+					cout<< "Player2 wins\n" ;
+					if(client){
+						win1.render(0, 0, gRenderer);
+					}
+					else{
+						lose1.render(0, 0, gRenderer);
+					}
+				}
+				SDL_Delay(5000);
+				break;
 			}
 		}
 	}

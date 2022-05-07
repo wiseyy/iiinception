@@ -24,9 +24,13 @@ class Player{
 	int PLAYER_VEL = 10;
 	// Constructors for the Player
 	Player(); 
+	// Score heuristic
+	int getScore(){
+		return 30*thrown + coins + 3*happiness + 2*health + uid(1, 3)*gifts - 2*trash;
+	}
 	Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Renderer);
 	// Handle the user input from keyboard or mouse
-	void handleEvent (SDL_Event &e, vector<SDL_Rect> &YuluLoc,Tile* trashTiles[],unordered_map<string, SoundEffect*> sounds, SDL_Renderer* Renderer);
+	void handleEvent (SDL_Event &e, vector<SDL_Rect> &YuluLoc, vector<SDL_Rect> &hostels, vector<SDL_Rect> &eatingPoints, Tile* trashTiles[],unordered_map<string, SoundEffect*> sounds, SDL_Renderer* Renderer);
 	// move player in each game loop
 	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList,vector<Prof*> &profListX, vector<Trash*> &trashList, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer);
 	// render the player according to the camera
@@ -38,6 +42,8 @@ class Player{
 	void getOnYulu(SDL_Renderer* Renderer);
 	void getOffYulu(SDL_Renderer* Renderer);
 	int getCoins();
+	string eatFood();
+	string visitHostel();
 	string get();
 	void set(string param);
 	pair<int, int> getCoordinates(){
@@ -57,13 +63,12 @@ class Player{
 	bool onYulu = false;
 	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
 	int yuluTimer = 0;
-	bool visitedHostel = false;
 	Texture display(SDL_Renderer* Renderer)
 	{
 		Texture result;
 		string val = "";
 		val += "Coins :" + to_string(coins) + " " + "Trash Thrown :" + to_string(thrown) + " ";
-		val += "Current Trash :" + to_string(trash);
+		val += "Current Trash :" + to_string(trash) + " Happiness : " + to_string(happiness) + " Health : " + to_string(health) + " Gift Boxes = " + to_string(gifts);
 		gFont = TTF_OpenFont("font/game-font.ttf",28);
 		SDL_Color textColor = {255,0,0};
 		if( gFont == NULL )
@@ -126,6 +131,17 @@ class Player{
 			}
 		}
 	}
+	// extra features
+	bool visitedHostel = false;
+	bool ateFood = false;
+	int coins = 100; 
+	int health = 100;
+	int gifts = 0;
+	int happiness  = 100;
+	int trash = 0;
+	int thrown = 0;
+	int study = 50;
+	int hunger = 100;
 private:
 	// Position of the player
 	int xPos, yPos;
@@ -135,17 +151,7 @@ private:
 	Texture SpriteTex;
 	// Collision Box for the player
 	SDL_Rect collBox;
-	// extra features
-	int coins = 500; 
-	int health = 100;
-	int gifts = 0;
-	int happiness  = 100;
-	int trash = 0;
-	int thrown = 0;
-	int study = 50;
-	// vector<SecretItem*> items; 
-	int hunger = 0;
-
+	
 };
 
 Player::Player(){
@@ -210,7 +216,7 @@ void Player::renderCam(SDL_Rect &camera,int frame,  SDL_Renderer* Renderer){
 	if (xPos >= camera.x && xPos <= camera.x + camera.w && yPos >= camera.y && yPos <= camera.y + camera.h)
 		SDL_RenderCopy(Renderer, SpriteTex.getTexture(), &clip, &PlayerRect);
 }
-void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, Tile* trashTiles[], unordered_map<string, SoundEffect*> sounds,   SDL_Renderer* Renderer){
+void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, vector<SDL_Rect> &hostels, vector<SDL_Rect> &eatingPoints, Tile* trashTiles[], unordered_map<string, SoundEffect*> sounds,   SDL_Renderer* Renderer){
     //If a key was pressed
     if ( e.type == SDL_KEYUP && e.key.repeat == 0 ){
     	//Adjust the velocity
@@ -246,19 +252,18 @@ void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, Tile* trashTil
             		if(checkCollision(collBox, yulu)){
             			onStation = true; 
             		}
+
             	}
 	        	cout<<PLAYER_VEL<<endl;
 	        	// at the station and not having yulu
 	        	if(!onYulu && onStation){
 	        		getOnYulu(Renderer);
 	        		string ev =  "Yulu Picked";
-	       			Texture evt = displayEvent(ev,Renderer);
-	       			evt.render(35,0, Renderer);
+	        		eventHappened = ev ;
 	        	}
 	        	else if (onYulu){
 	        		string ev =  "Yulu Dropped";
-	       			Texture evt = displayEvent(ev,Renderer);
-	       			evt.render(35,0, Renderer);
+	       			eventHappened = ev;
 	        		getOffYulu(Renderer);
 	        	}
 	        	break;
@@ -274,19 +279,30 @@ void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, Tile* trashTil
 	       		SDL_Rect obj = {collBox.x - 10, collBox.y - 10, collBox.w + 20, collBox.h + 20};
 	       		onTrashCan = touchesTrashCan(obj, trashTiles);
 	       		if(trash > 0 && trash <= 10 && onTrashCan){
-	       			thrown = trash ;
+	       			thrown += trash ;
 	       			trash = 0;
 					coins += 10 ;
 	       			string ev =  "Trash Thrown \n";
-	       			Texture evt = displayEvent(ev,Renderer);
-	       			evt.render(35,0, Renderer);
+	       			eventHappened = ev; 
 	       			sounds["throw"]->play(0);
 	       		}
 	       		else{
 	       			string ev = "Collect some garbage to throw in the trash can\n";
-	       			Texture evt = displayEvent(ev,Renderer);
-	       			evt.render(0,35, Renderer);
+	       			eventHappened = ev ;
 	       		}
+	       		break ;
+	       	}
+	       	case SDLK_v :
+	       	{
+	       		string ev = visitHostel();
+	       		eventHappened = ev;
+	       		break ;
+	       	}
+	       	case SDLK_e :
+	       	{
+	       		string ev = eatFood() ;
+	       		eventHappened = ev; 
+	       		break ;
 	       	}
     	}
     }
@@ -368,7 +384,8 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     }
     if(touchesCoin(collBox, coinList).first){
     	this->coins += 1;
-    	cout << "Collected a coin\n";
+    	string ev =  "Collected a coin";
+    	eventHappened = ev;
     	sounds["coin"]->play(0);
     }
     if(touchesGift(collBox, giftList)){
@@ -376,7 +393,8 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     	int val = giftList[ind]->getValue();
     	gifts += val;
     	giftList[ind]->destroy();
-    	cout<<"Collected srcret item"<<" "<<val<<endl;
+    	string ev = "Collected srcret item";
+    	eventHappened = ev;
     	sounds["gift"]->play(0);
     }
     if(touchesProf(collBox, profListX)){
@@ -384,7 +402,8 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     	int anger = profListX[ind]->getAnger();
     	profListX[ind]->setAnger(0);
     	happiness -= anger ;
-    	cout<<"Collided with an angry prof X"<<anger<<endl;
+    	string ev = "Collided with an angry prof";
+    	eventHappened = ev;
     	sounds["angry"]->play(0);
     }
     if (touchesTrash(collBox, trashList)){
@@ -392,11 +411,13 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     		int ind = touchesTrashIndex(collBox, trashList);
     		trash++; 
     		trashList[ind]->destroy();
-    		cout<< "Collected Trash Item\n";
+    		string ev =  "Collected Trash Item";
+    		eventHappened = ev;
     		sounds["trash"]->play(0);
     	}
     	else{
-    		cout << "Cannot pick more trash... Throw some in trash cans\n";
+    		string ev =  "Cannot pick more trash... Throw some in trash cans";
+    		eventHappened = ev;
     	}
     }
 }
@@ -441,8 +462,6 @@ void Player::render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer){
 	}
 	SDL_Rect PlayerRect = {xPos - camera.x, yPos - camera.y,PLAYER_WIDTH, PLAYER_HEIGHT};
 	SDL_RenderCopy(Renderer, SpriteTex.getTexture(), &clip, &PlayerRect);
-	Texture meter = display(Renderer);
-	meter.render(0, 0, Renderer);
 }
 
 int Player::getCoins(){
@@ -483,6 +502,29 @@ string Player::get(){
 	return ret;
 }
 
+string Player::eatFood(){
+	if(!ateFood){
+		if(coins > 10){
+			ateFood = false;
+			happiness += 10; 
+			health += 10;
+			return "Ate very delicious food";
+		}
+		return "Not enough Coins";
+	}
+	return "Just ate food";
+}
+
+string Player::visitHostel(){
+	if(!visitedHostel){
+		visitedHostel = true;
+		happiness += 10; 
+		health += 10;
+		coins += 5;
+		return "Visited Hostel";
+	}
+	return "Visited the hostel just a moment ago";
+}
 void Player::set(string param){
 	int iter = 0;
 	int prev = 0;
