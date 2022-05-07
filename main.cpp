@@ -16,50 +16,14 @@
 #include <unordered_map>
 #include "Prof.hpp"
 
+#include "client.hpp"
+#include "server.hpp"
+
 using namespace std;
 
 Player players[MAX_PLAYERS];
 int number_of_players = 0;
 int16_t my_id = -1;
-
-// void init_players() {
-//     int i;
-//     for (i = 0; i < MAX_PLAYERS; i++) {
-// 		players[i] = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
-//     }
-// }
-
-// void receive_new_id(int id) {
-//     my_id = id;
-//     number_of_players = id;
-//     printf("my_id is now: %d\n", my_id);
-// }
-
-// void check_if_its_new_player(int id){
-//     if (id > number_of_players) {
-//         number_of_players = id;
-//         printf("new max player, now %d\n", number_of_players + 1);
-//     }
-// }
-
-// void* client_loop(void *arg) {
-//     int socket = *((int *) arg);
-//     int16_t tab[BUF_MAX];
-//     int length;
-//     int id
-//     while (1) {
-//         length = client_listen(socket, tab);
-//         id = tab[0];
-//         if (id == -1) {
-//             receive_new_id(tab[1]);
-//         }
-//         if (id >= 0) {
-//             check_if_its_new_player(id);
-            
-//         }
-//         usleep(50);
-//     }
-// }
 
 int main(int argc, char* argv[]) {
     cout << "Game Started";
@@ -68,6 +32,23 @@ int main(int argc, char* argv[]) {
 	cout<< "MAP Width : "<< MAP_WIDTH <<endl;
 	cout<< "MAP Height : "<< MAP_HEIGHT <<endl;
 	cout<<"Total Tiles : "<< TOTAL_TILES<<endl;
+
+	bool server = false;
+    bool client = false;
+
+	string what = argv[1];
+
+    if(what.compare("s") == 0)
+    {
+        server = true;
+        start_server();
+    }
+    if(what.compare("c") == 0)
+    {
+        client = true;
+        start_client(argv[2]);
+    }
+
 	if (!init()){
 		cout << "Could not initialize SDL\n";
 	}

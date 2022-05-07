@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "ostream": "cpp",
-        "__node_handle": "cpp"
+        "__node_handle": "cpp",
+        "unordered_map": "cpp"
     }
 }
