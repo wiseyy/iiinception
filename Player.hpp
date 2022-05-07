@@ -1,8 +1,8 @@
 #pragma once 
 
 #include<iostream>
-#include "SDL.h" 
-#include "SDL_image.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <utility>
 #include<vector>
 #include "constants.hpp"
@@ -10,6 +10,7 @@
 #include "Collisions.hpp"
 #include "SoundEffect.hpp"
 #include <unordered_map>
+#include "Prof.hpp"
 
 class Player{
 	public: 
@@ -17,14 +18,14 @@ class Player{
 	static const int PLAYER_WIDTH = 35;
 	static const int PLAYER_HEIGHT = 35;
 
-	int PLAYER_VEL = 4;
+	int PLAYER_VEL = 10;
 	// Constructors for the Player
 	Player(); 
 	Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Renderer);
 	// Handle the user input from keyboard or mouse
 	void handleEvent (SDL_Event &e, SDL_Renderer* Renderer);
 	// move player in each game loop
-	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer);
+	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList,vector<Prof*> &profListX, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer);
 	// render the player according to the camera
 	void render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer); 
 	// set the camera according to the player
@@ -39,6 +40,12 @@ class Player{
 	}
 	int getGifts(){
 		return gifts ;
+	}
+	int getHappiness(){
+		return happiness;
+	}
+	void setHappiness(int x){
+		happiness = x;
 	}
 	// vector<SecretItem*> getItemList();
 	bool onYulu = false;
@@ -57,6 +64,7 @@ private:
 	int coins = 500; 
 	int health = 100;
 	int gifts = 0;
+	int happiness  = 100;
 	// vector<SecretItem*> items; 
 
 };
@@ -170,17 +178,16 @@ SDL_Rect Player::getCollBox(){
 	return collBox; 
 }
 
-void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer){
+void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, vector<Prof*> &profListX,  unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer){
 	// yulu Timer checks if player needs to get off yulu
     if (onYulu){
     	if(yuluTimer < 600){
     		yuluTimer += 1;
-    		cout<<yuluTimer<<endl;
+    		// cout<<yuluTimer<<endl;
     	}
     	else{ 
     		yuluTimer = 0;
     		getOffYulu(Renderer);
-    		SDL_Delay(200);  		
     	}
     }
 
@@ -214,6 +221,13 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     	giftList[ind]->destroy();
     	cout<<"Collected srcret item"<<" "<<val<<endl;
     	sounds["gift"]->play(0);
+    }
+    if(touchesProf(collBox, profListX)){
+    	int ind = touchesProfIndex(collBox, profListX);
+    	int anger = profListX[ind]->getAnger();
+    	profListX[ind]->setAnger(0);
+    	happiness -= anger ;
+    	cout<<"Collided with an angry prof X"<<anger<<endl;
     }
 }
 
@@ -256,10 +270,7 @@ void Player::render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer){
 		}
 	}
 	SDL_Rect PlayerRect = {xPos - camera.x, yPos - camera.y,PLAYER_WIDTH, PLAYER_HEIGHT};
-	// SpriteTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
-	// SDL_RenderCopy( gRenderer, texture, NULL, &renderQuad);
 	SDL_RenderCopy(Renderer, SpriteTex.getTexture(), &clip, &PlayerRect);
-	// SpriteTex.renderSprite(xPos - camera.x, yPos - camera.y, Renderer, &clip) ;
 }
 
 int Player::getCoins(){

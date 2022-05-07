@@ -9,18 +9,24 @@
 #include "Texture.hpp"
 #include "TileMap.hpp"
 #include "Gift.hpp"
+#include "Prof.hpp"
+
+
 using namespace std;
 
 
 // Detect collisisions between to boxes
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 // Check if a moving object collides with a wall tile
-bool touchesWall(SDL_Rect obj, Tile* buildings[], Tile* roads[]);
+bool touchesWall(SDL_Rect obj, Tile* collision[]);
 // function to check if something touches a coin or not
 pair<bool, int> touchesCoin(SDL_Rect obj, vector<Coin*> &coins);
 // Collision with gift
 int touchesGiftIndex(SDL_Rect obj, vector<Gift*> &gifts);
 bool touchesGift(SDL_Rect obj, vector<Gift*> &gifts);
+// collision with prof
+bool touchesProf(SDL_Rect obj, vector<Prof*> &profs);
+int touchesProfIndex(SDL_Rect obj, vector<Prof*> &profs);
 
 
 // implementation of the above functions
@@ -92,6 +98,28 @@ int touchesGiftIndex(SDL_Rect obj, vector<Gift*> &gifts){
     return -1;
 }
 
+bool touchesProf(SDL_Rect obj, vector<Prof*> &profs){
+    for(int i = 0; i<TOTAL_PROFS; ++i){
+        // if a collision between any item and object then touched item
+        if(checkCollision(obj,profs[i]->getBox()) ){
+            return true;
+        }
+    }
+    // object touches no item
+    return false;
+}
+
+int touchesProfIndex(SDL_Rect obj, vector<Prof*> &profs){
+    for(int i = 0; i<TOTAL_PROFS; ++i){
+        // if a collision between any item and object then touched item
+        if(checkCollision(obj,profs[i]->getBox()) ){
+            return i;
+        }
+    }
+    // object touches no item
+    return -1;
+}
+
 bool touchesGift(SDL_Rect obj, vector<Gift*> &gifts){
     for(int i = 0; i<TOTAL_GIFTS; ++i){
         // if a collision between any item and object then touched item
@@ -100,5 +128,5 @@ bool touchesGift(SDL_Rect obj, vector<Gift*> &gifts){
         }
     }
     // object touches no item
-    return -false;
+    return false;
 }

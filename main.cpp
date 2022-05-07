@@ -14,7 +14,7 @@
 #include "Gift.hpp"
 #include <fstream>
 #include <unordered_map>
-
+#include "Prof.hpp"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ int main() {
 		Uint32 frameStart = 60; 
 		int frameTime; 
 
-		// loading sound effects 
+		// loading sound effects    
 		unordered_map <string, SoundEffect* > soundHashMap; 
 		// sound effect for coin
 		SoundEffect* coin = new SoundEffect("music/coin.wav");
@@ -76,7 +76,14 @@ int main() {
 			giftCoordinates[i] = roadCoordinates[giftIndices[i]];
 		}
 		vector<Gift*> gifts = generateGifts("assets/box.png", giftCoordinates, gRenderer);
-
+		// Generate Angry Professors
+		vector<int> profIndices = generateRandomVectorDistinct(TOTAL_PROFS, 0, roadCoordinates.size()-1);
+		vector<pair<int, int>> profCoordinates(TOTAL_PROFS);
+		for(int i = 0; i<TOTAL_PROFS; ++i){
+			profCoordinates[i] = roadCoordinates[profIndices[i]];
+		}
+		vector<Prof*> profsX = generateProfsX("assets/claude.png", profCoordinates, gRenderer);
+		
 		cout<< roadCoordinates.size()<<endl;
 		cout<<"Media Loaded\n";
 		bool quit = false;
@@ -92,7 +99,9 @@ int main() {
 				}
 				p1.handleEvent(e, gRenderer);
 			}
-			p1.move(roadMap->Map, coins, gifts, soundHashMap, gRenderer);
+			p1.move(roadMap->Map, coins, gifts,profsX, soundHashMap, gRenderer);
+			moveProfs(profsX, roadMap->Map, gRenderer);
+			moveProfs(profsX, roadMap->Map, gRenderer);
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
 			collisionMap->render(camera, gRenderer);
@@ -100,7 +109,8 @@ int main() {
 			roadMap->render(camera, gRenderer);
 			above_roadMap->render(camera, gRenderer);
 			trashMap->render(camera, gRenderer);
-			
+			renderProfs(profsX, frame, camera, gRenderer);
+			// renderProfs(profsY, frame, camera, gRenderer);
 			renderGifts(gifts, camera, gRenderer);
 			renderCoins(coins, camera, gRenderer);
 			p1.render(camera, frame%6, gRenderer);
@@ -111,12 +121,19 @@ int main() {
 			// t1.render(0,0,gRenderer);
 			SDL_RenderPresent( gRenderer );
 
+			// reset angry attribute of profs after some frames
+			if (frame % 600 == 0){
+				for (auto prof : profsX){
+					prof->setAnger(getRandomInt(5, 30));
+				}
+			}
 			frameTime = SDL_GetTicks() - frameStart;
 			if(frameDelay > frameTime){
 				SDL_Delay(frameDelay - frameTime);
 			}
 			frame++;
 		}
+		cout<< p1.getHappiness()<<endl;
 		cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
 	}
     return 0;

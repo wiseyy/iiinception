@@ -55,5 +55,9 @@ const int GIFT_HEIGHT = 25;
 const int TOTAL_GIFTS = 50;
 
 // Prof Dimensions
-const int PROF_WIDTH = 30;
-const int PROF_HEIGHT = 30;
+const int PROF_WIDTH = 40;
+const int PROF_HEIGHT = 40;
+
+const int TOTAL_PROFS = 10;
+
+const int PROF_SPEED = 1;
