@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "SDL_image.h"
+#include <SDL2/SDL_mixer.h>
 #include<vector>
 #include<utility>
 #include "game.hpp"
@@ -12,6 +13,8 @@
 #include "TileMap.hpp"
 #include "Gift.hpp"
 #include <fstream>
+#include <unordered_map>
+
 
 using namespace std;
 
@@ -32,6 +35,16 @@ int main() {
 		// Frame Rate 
 		Uint32 frameStart = 60; 
 		int frameTime; 
+
+		// loading sound effects 
+		unordered_map <string, SoundEffect* > soundHashMap; 
+		// sound effect for coin
+		SoundEffect* coin = new SoundEffect("music/coin.wav");
+		soundHashMap["coin"] = coin;
+		// sound effect for collecting gift
+		SoundEffect* gift = new SoundEffect("music/gift.mp3");
+		soundHashMap["gift"] = gift;
+
 		// Generating different layers of our tilemap
 		TileMap* collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES,"map/sdl_stuff/collision.txt","collision",COLL_PIXELS_HEIGHT/TILE_HEIGHT, COLL_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
 		TileMap* below_roadMap = new TileMap("map/sdl_stuff/below_road_tiles.png", BELOW_ROAD_TILE_TYPES, "map/sdl_stuff/below_road.txt", "below_road", BELOW_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, BELOW_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
@@ -79,7 +92,7 @@ int main() {
 				}
 				p1.handleEvent(e, gRenderer);
 			}
-			p1.move(roadMap->Map, coins, gifts);
+			p1.move(roadMap->Map, coins, gifts, soundHashMap);
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
 			collisionMap->render(camera, gRenderer);
@@ -87,8 +100,9 @@ int main() {
 			roadMap->render(camera, gRenderer);
 			above_roadMap->render(camera, gRenderer);
 			trashMap->render(camera, gRenderer);
-			renderCoins(coins, camera, gRenderer);
+			
 			renderGifts(gifts, camera, gRenderer);
+			renderCoins(coins, camera, gRenderer);
 			p1.render(camera, frame%6, gRenderer);
 			
 			

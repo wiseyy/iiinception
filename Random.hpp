@@ -3,8 +3,13 @@
 #include<iostream>
 #include<vector>
 #include<time.h>
+#include<random>
+#include<chrono>
 
 using namespace std;
+
+#define uid(a,b) uniform_int_distribution<long long>(a,b)(rng)
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 // function to constraint a number in a given range
 int constraint(int x, int lower, int upper);
@@ -21,10 +26,9 @@ int constraint(int x, int lower, int upper){
 }
 
 vector<int> generateRandomVector(int n, int lower, int upper){
-	srand(time(0));
 	vector<int> randomVector(n);
 	for(int i = 0; i<n; ++i){
-		randomVector[i] = constraint(rand(), lower, upper);
+		randomVector[i] = uid(lower, upper);
 	}
 	return randomVector;
 }
@@ -34,7 +38,7 @@ vector<int> generateRandomVectorDistinct(int n, int lower, int upper){
 	vector<int> randomVector(n);
 	int i = 0;
 	while(i<n){
-		int gen = constraint(rand(), lower, upper);
+		int gen = uid(lower, upper);
 		bool found = false;
 		for(int j = 0; j<i; ++j){
 			if (randomVector[j] == gen){
@@ -51,6 +55,5 @@ vector<int> generateRandomVectorDistinct(int n, int lower, int upper){
 }
 
 int getRandomInt(int lower, int upper){
-	srand(time(0));
-	return constraint(rand(), lower, upper);
+	return uid(lower, upper);
 }
