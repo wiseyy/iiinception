@@ -228,7 +228,7 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     	profListX[ind]->setAnger(0);
     	happiness -= anger ;
     	cout<<"Collided with an angry prof X"<<anger<<endl;
-    	sounds["dog"]->play(0);
+    	sounds["angry"]->play(0);
     }
 }
 
