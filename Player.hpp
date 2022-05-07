@@ -16,8 +16,8 @@
 class Player{
 	public: 
 	// Dimensions of the player 
-	static const int PLAYER_WIDTH = 30;
-	static const int PLAYER_HEIGHT = 30;
+	static const int PLAYER_WIDTH = 25;
+	static const int PLAYER_HEIGHT = 25;
 
 	int PLAYER_VEL = 10;
 	// Constructors for the Player
@@ -55,6 +55,7 @@ class Player{
 	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
 	int yuluTimer = 0;
 	bool visitedHostel = false;
+	int status = 1;
 private:
 	// Position of the player
 	int xPos, yPos;

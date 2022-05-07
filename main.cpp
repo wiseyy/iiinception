@@ -151,7 +151,10 @@ int main(int argc, char *argv[])
 		TileMap *trashMap = new TileMap("map/sdl_stuff/trash_tiles.png", TRASH_TILE_TYPES, "map/sdl_stuff/trash.txt", "trash", TRASH_PIXELS_HEIGHT / TILE_HEIGHT, TRASH_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
 
 		main->play(-1);
-
+		start.render(0, 0, gRenderer);
+		SDL_RenderPresent(gRenderer);
+		SDL_Delay(3000);
+		
 		// Generating road coordinates
 		vector<pair<int, int>> roadCoordinates;
 		for (int i = 0; i < TOTAL_TILES; ++i)

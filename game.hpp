@@ -65,8 +65,5 @@ bool init(){
 		}
 	}
 	start.loadfromFile("assets/bg.png", gRenderer);
-	start.render(0, 0, gRenderer);
-	SDL_RenderPresent(gRenderer);
-	SDL_Delay(5000);
 	return success;
 }
