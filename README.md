@@ -21,7 +21,7 @@ To play the game, follow the following instructions.
 
 ## Objective
 
-The objective of the game is to make our campus a clean place by taking part in the NSS Cleanliness Drive. You have to collect the garbage at mentioned locations and throw them in the dustbin. It brings about happiness and health. Along with this you can also collect gift boxes and coins to help you get a better score. The person with the more score wins the game! Make sure to avoid angry professors as they make you sad and lower your score.
+The objective of the game is to make our campus a clean place by taking part in the NSS Cleanliness Drive. You have to collect the garbage at mentioned locations and throw them in the dustbin. It brings about happiness and health. Along with this you can also collect gift boxes and coins to help you get a better score. The person with more score wins the game! Make sure to avoid angry professors as they make you sad and lower your score.
 
 ## Assets
 
