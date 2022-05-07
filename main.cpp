@@ -61,6 +61,8 @@ int16_t my_id = -1;
 //     }
 // }
 
+void loadYuluStations(vector<SDL_Rect> &yulus);
+
 int main(int argc, char* argv[]) {
     cout << "Game Started";
     cout<< "Screen Width : "<< SCREEN_WIDTH <<endl;
@@ -75,15 +77,9 @@ int main(int argc, char* argv[]) {
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
 		
+		// Marking the yulu stations
 		vector<SDL_Rect> yulus(8);
-		yulus[0] = {yulu1.first, yulu1.second, LOC_OFFSET, LOC_OFFSET};
-		yulus[1] = {yulu2.first, yulu2.second, LOC_OFFSET, LOC_OFFSET};
-		yulus[2] = {yulu3.first, yulu3.second, LOC_OFFSET, LOC_OFFSET};
-		yulus[3] = {yulu4.first, yulu4.second, LOC_OFFSET, LOC_OFFSET};
-		yulus[4] = {yulu5.first, yulu5.second, LOC_OFFSET, LOC_OFFSET};
-		yulus[5] = {yulu6.first, yulu6.second, LOC_OFFSET, LOC_OFFSET};
-		yulus[6] = {yulu7.first, yulu7.second, LOC_OFFSET, LOC_OFFSET};
-		yulus[7] = {yulu8.first, yulu8.second, LOC_OFFSET, LOC_OFFSET};
+		loadYuluStations(yulus);
 
 		// Frame Rate 
 		Uint32 frameStart = 60; 
@@ -215,4 +211,15 @@ int main(int argc, char* argv[]) {
 		cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
 	}
     return 0;
+}
+
+void loadYuluStations(vector<SDL_Rect> &yulus){
+	yulus[0] = yulu1;
+	yulus[1] = yulu2;
+	yulus[2] = yulu3;
+	yulus[3] = yulu4;
+	yulus[4] = yulu5;
+	yulus[5] = yulu6;
+	yulus[6] = yulu7;
+	yulus[7] = yulu8;
 }

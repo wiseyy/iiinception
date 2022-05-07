@@ -120,7 +120,6 @@ void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc,  SDL_Renderer*
     	switch(e.key.keysym.sym){
     		case SDLK_RETURN:
     		{
-            	cout<<"Pressed P\n";
             	bool onStation = false ;
             	// check if player is on yulu station
             	for(auto yulu : YuluLoc){

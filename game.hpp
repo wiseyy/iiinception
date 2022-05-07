@@ -14,6 +14,7 @@ SDL_Renderer* gRenderer = NULL;
 // Function to initialize the SDL subsystems
 bool init();
 
+
 bool init(){
 	//Initialization flag
 	bool success = true;
