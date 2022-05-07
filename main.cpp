@@ -346,19 +346,19 @@ void loadAllHostels(vector<SDL_Rect> &hostels, unordered_map<string, SDL_Rect> &
 
 void loadAllEatingPoints(vector<SDL_Rect> &eatingPoints, unordered_map<string, SDL_Rect> &loc)
 {
-	eatingPoinst[0] = loc["Holistic"];
-	eatingPoinst[1] = loc["Delhi16"];
-	eatingPoinst[2] = loc["Kumaon Mess"];
-	eatingPoinst[3] = loc["Zanskar Mess"];
-	eatingPoinst[4] = loc["Satpura Night Mess"];
-	eatingPoinst[5] = loc["Masalamix"];
-	eatingPoinst[6] = loc["Chaayos"];
-	eatingPoinst[7] = loc["Rajdhani"];
-	eatingPoinst[8] = loc["Volley"];
-	eatingPoinst[9] = loc["Shiru Cafe"];
-	eatingPoinst[10] = loc["Amul"];
-	eatingPoinst[11] = loc["Nescafe"];
-	eatingPoinst[12] = loc["Himadri Night Mess"];
+	eatingPoints[0] = loc["Holistic"];
+	eatingPoints[1] = loc["Delhi16"];
+	eatingPoints[2] = loc["Kumaon Mess"];
+	eatingPoints[3] = loc["Zanskar Mess"];
+	eatingPoints[4] = loc["Satpura Night Mess"];
+	eatingPoints[5] = loc["Masalamix"];
+	eatingPoints[6] = loc["Chaayos"];
+	eatingPoints[7] = loc["Rajdhani"];
+	eatingPoints[8] = loc["Volley"];
+	eatingPoints[9] = loc["Shiru Cafe"];
+	eatingPoints[10] = loc["Amul"];
+	eatingPoints[11] = loc["Nescafe"];
+	eatingPoints[12] = loc["Himadri Night Mess"];
 }
 
 void makeLocationHashMap(unordered_map<string, SDL_Rect> &loc)
