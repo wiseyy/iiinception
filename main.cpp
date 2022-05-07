@@ -322,6 +322,45 @@ void loadYuluStations(vector<SDL_Rect> &yulus)
 	yulus[7] = yulu8;
 }
 
+void loadAllHostels(vector<SDL_Rect> &hostels, unordered_map<string, SDL_Rect> &loc)
+{
+	hostels[0] = loc["Girnar"];
+	hostels[1] = loc["Satpura"];
+	hostels[2] = loc["Himadri"];
+	hostels[3] = loc["Kailash"];
+	hostels[4] = loc["Jwalamukhi"];
+	hostels[5] = loc["Jwalamukhi1"];
+	hostels[6] = loc["Vindy"];
+	hostels[7] = loc["Zanskar"];
+	hostels[8] = loc["Shivalik"];
+	hostels[9] = loc["Kumaon"];
+	hostels[10] = loc["Nalanda"];
+	hostels[11] = loc["Karakoram"];
+	hostels[12] = loc["Karakoram1"];
+	hostels[13] = loc["Aravali"];
+	hostels[14] = loc["Aravali1"];
+	hostels[15] = loc["Aravali2"];
+	hostels[16] = loc["Udaigiri"];
+	hostels[17] = loc["Nilgiri"];
+}
+
+void loadAllEatingPoints(vector<SDL_Rect> &eatingPoints, unordered_map<string, SDL_Rect> &loc)
+{
+	eatingPoinst[0] = loc["Holistic"];
+	eatingPoinst[1] = loc["Delhi16"];
+	eatingPoinst[2] = loc["Kumaon Mess"];
+	eatingPoinst[3] = loc["Zanskar Mess"];
+	eatingPoinst[4] = loc["Satpura Night Mess"];
+	eatingPoinst[5] = loc["Masalamix"];
+	eatingPoinst[6] = loc["Chaayos"];
+	eatingPoinst[7] = loc["Rajdhani"];
+	eatingPoinst[8] = loc["Volley"];
+	eatingPoinst[9] = loc["Shiru Cafe"];
+	eatingPoinst[10] = loc["Amul"];
+	eatingPoinst[11] = loc["Nescafe"];
+	eatingPoinst[12] = loc["Himadri Night Mess"];
+}
+
 void makeLocationHashMap(unordered_map<string, SDL_Rect> &loc)
 {
 	loc["YuluStand1"] = yulu1;
@@ -337,13 +376,17 @@ void makeLocationHashMap(unordered_map<string, SDL_Rect> &loc)
 	loc["Himadri"] = himadri;
 	loc["Kailash"] = kailash;
 	loc["Jwalamukhi"] = jwala;
+	loc["Jwalamukhi1"] = jwala1;
 	loc["Vindy"] = vindy;
 	loc["Zanskar"] = zanskar;
 	loc["Shivalik"] = shivalik;
 	loc["Kumaon"] = kumaon;
 	loc["Nalanda"] = nalanda;
 	loc["Karakoram"] = kara;
+	loc["Karakoram1"] = kara1;
 	loc["Aravali"] = ara;
+	loc["Aravali1"] = ara1;
+	loc["Aravali2"] = ara2;
 	loc["Udaigiri"] = udai;
 	loc["Nilgiri"] = nil;
 	loc["SAC"] = sac;
