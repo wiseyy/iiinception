@@ -29,14 +29,12 @@ int start_server(){
     address.sin_port = htons(PORT);
  
     // Forcefully attaching socket to the port 8080
-    // if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
-    //     perror("bind failed");
-    //     exit(EXIT_FAILURE);
-    // }
+    if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+         perror("bind failed");
+         exit(EXIT_FAILURE);
+    }
 
-    // cout << bind(server_fd, (struct sockaddr*)&address, sizeof(address)) << endl;
 
-    bind(server_fd, (struct sockaddr*)&address, sizeof(address));
 
     if (listen(server_fd, 3) < 0) {
         perror("listen");
