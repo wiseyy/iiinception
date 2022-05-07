@@ -23,7 +23,7 @@ class Player{
 	Player(); 
 	Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Renderer);
 	// Handle the user input from keyboard or mouse
-	void handleEvent (SDL_Event &e, SDL_Renderer* Renderer);
+	void handleEvent (SDL_Event &e, vector<SDL_Rect> &YuluLoc, SDL_Renderer* Renderer);
 	// move player in each game loop
 	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList,vector<Prof*> &profListX, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer);
 	// render the player according to the camera
@@ -90,7 +90,7 @@ Player::Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Ren
 }
 
 
-void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
+void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc,  SDL_Renderer* Renderer){
     //If a key was pressed
     if ( e.type == SDL_KEYUP && e.key.repeat == 0 ){
     	//Adjust the velocity
@@ -119,15 +119,24 @@ void Player::handleEvent(SDL_Event& e, SDL_Renderer* Renderer){
     if(e.type == SDL_KEYDOWN && e.key.repeat == 0 ){
     	switch(e.key.keysym.sym){
     		case SDLK_RETURN:
-            	cout<<"Pressed P\n";
+    		{
+            	bool onStation = false ;
+            	// check if player is on yulu station
+            	for(auto yulu : YuluLoc){
+            		if(checkCollision(collBox, yulu)){
+            			onStation = true; 
+            		}
+            	}
 	        	cout<<PLAYER_VEL<<endl;
-	        	if(onYulu == false){
+	        	// at the station and not having yulu
+	        	if(!onYulu && onStation){
 	        		getOnYulu(Renderer);
 	        	}
-	        	else{
+	        	else if (onYulu){
 	        		getOffYulu(Renderer);
 	        	}
 	        	break;
+	        }
 	       	case SDLK_p :
 	       		xVel = 0;
 	       		yVel = 0;
@@ -183,6 +192,7 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     if (onYulu){
     	if(yuluTimer < 600){
     		yuluTimer += 1;
+    		sounds["yulu"]->play(0);
     		// cout<<yuluTimer<<endl;
     	}
     	else{ 
@@ -291,9 +301,14 @@ void Player::getOffYulu(SDL_Renderer* Renderer){
 void Player::getOnYulu(SDL_Renderer* Renderer){
 	if(!onYulu){
 		onYulu = true;
-		PLAYER_VEL += 5;
+		coins -= 10;
+		PLAYER_VEL += 10;
 		if(!SpriteTex.loadfromFile("assets/yulub.png", Renderer)){
 			cout<<"Could load get off yulu picture\n";
 		}
+	}
+	happiness += 5; 
+	if(happiness > 100){
+		happiness = 100 ;
 	}
 }

@@ -1,4 +1,4 @@
-{
+locations = {
     "satpura":[5372, 941], 
     "girnar":[5876, 1629],
     "himadri":[10778, 1284],
@@ -60,3 +60,12 @@
     "research":[6332, 4402, 6775, 4406],
     "prof_house" : [11014, 1640],
 }
+
+file1 = open('locations.txt', 'w')
+
+s  = ""
+for loc in locations.keys():
+    s += "loc[\"" + loc.title() + "\"] = " + loc +";\n"
+
+file1.write(s)
+file1.close()
