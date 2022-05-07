@@ -176,8 +176,10 @@ int main(int argc, char *argv[])
 				roadCoordinates.push_back((roadMap->Map[i])->getCoordinates());
 			}
 		}
-		Player p1 = Player("assets/boy.png", roadCoordinates[0].first, roadCoordinates[0].second, 0, 0, gRenderer);
-		Player p2 = Player("assets/boy2.png", roadCoordinates[0].first, roadCoordinates[0].second, 0, 0, gRenderer);
+		int px1 = getRandomInt(0,roadCoordinates.size() - 1 );
+		int px2 = getRandomInt(0,roadCoordinates.size() - 1 );
+		Player p1 = Player("assets/boy.png", roadCoordinates[px1].first, roadCoordinates[px1].second, 0, 0, gRenderer);
+		Player p2 = Player("assets/boy2.png", roadCoordinates[px2].first, roadCoordinates[px2].second, 0, 0, gRenderer);
 		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size() - 1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
@@ -363,8 +365,8 @@ int main(int argc, char *argv[])
 				Texture lose1 , win1;
 				bool x1 = lose1.loadfromFile("assets/lose.jpg", gRenderer);
 				bool x2 = win1.loadfromFile("assets/win.jpg", gRenderer);
-				// lose1.setDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
-				// win1.setDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
+				lose1.setDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
+				win1.setDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
 				int score1 = p1.getScore();
 				int score2 = p2.getScore();
 				cout << "P1 : " << score1 <<endl;
