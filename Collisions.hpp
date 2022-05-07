@@ -11,6 +11,7 @@
 #include "Gift.hpp"
 using namespace std;
 
+
 // Detect collisisions between to boxes
 bool checkCollision(SDL_Rect a, SDL_Rect b);
 // Check if a moving object collides with a wall tile

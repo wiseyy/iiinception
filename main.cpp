@@ -1,6 +1,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "SDL_image.h"
+#include <SDL2/SDL_mixer.h>
 #include<vector>
 #include<utility>
 #include "game.hpp"
@@ -12,6 +13,8 @@
 #include "TileMap.hpp"
 #include "Gift.hpp"
 #include <fstream>
+#include <unordered_map>
+
 
 using namespace std;
 
@@ -29,8 +32,20 @@ int main() {
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
 		
+		// Frame Rate 
+		Uint32 frameStart = 60; 
+		int frameTime; 
+
+		// loading sound effects 
+		unordered_map <string, SoundEffect* > soundHashMap; 
+		// sound effect for coin
+		SoundEffect* coin = new SoundEffect("music/coin.wav");
+		soundHashMap["coin"] = coin;
+		// sound effect for collecting gift
+		SoundEffect* gift = new SoundEffect("music/gift.mp3");
+		soundHashMap["gift"] = gift;
+
 		// Generating different layers of our tilemap
-		
 		TileMap* collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES,"map/sdl_stuff/collision.txt","collision",COLL_PIXELS_HEIGHT/TILE_HEIGHT, COLL_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
 		TileMap* below_roadMap = new TileMap("map/sdl_stuff/below_road_tiles.png", BELOW_ROAD_TILE_TYPES, "map/sdl_stuff/below_road.txt", "below_road", BELOW_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, BELOW_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
 		TileMap* roadMap = new TileMap("map/sdl_stuff/road_tiles.png", ROAD_TILE_TYPES, "map/sdl_stuff/road.txt", "road", ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
@@ -45,7 +60,7 @@ int main() {
 			}
 		}
 		// generating player on the road
-		Player p1 = Player("assets/player.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+		Player p1 = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
 		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
@@ -68,6 +83,8 @@ int main() {
 		SDL_Event e;
 		int frame = 0;
 		while(!quit){
+			frameStart = SDL_GetTicks();
+
 			while(SDL_PollEvent(&e) != 0){
 				if( e.type == SDL_QUIT ){
 						quit = true;
@@ -75,7 +92,7 @@ int main() {
 				}
 				p1.handleEvent(e, gRenderer);
 			}
-			p1.move(roadMap->Map, coins, gifts);
+			p1.move(roadMap->Map, coins, gifts, soundHashMap, gRenderer);
 			p1.setCamera(camera);
 			SDL_RenderClear(gRenderer);
 			collisionMap->render(camera, gRenderer);
@@ -83,9 +100,10 @@ int main() {
 			roadMap->render(camera, gRenderer);
 			above_roadMap->render(camera, gRenderer);
 			trashMap->render(camera, gRenderer);
-			renderCoins(coins, camera, gRenderer);
+			
 			renderGifts(gifts, camera, gRenderer);
-			p1.render(camera, gRenderer);
+			renderCoins(coins, camera, gRenderer);
+			p1.render(camera, frame%6, gRenderer);
 			
 			
 
@@ -93,7 +111,11 @@ int main() {
 			// t1.render(0,0,gRenderer);
 			SDL_RenderPresent( gRenderer );
 
-			frame++ ;
+			frameTime = SDL_GetTicks() - frameStart;
+			if(frameDelay > frameTime){
+				SDL_Delay(frameDelay - frameTime);
+			}
+			frame++;
 		}
 		cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
 	}
