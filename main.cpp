@@ -15,7 +15,7 @@
 #include <fstream>
 #include <unordered_map>
 #include "Prof.hpp"
-
+#include "Trash.hpp"
 #include "client.hpp"
 #include "server.hpp"
 
@@ -143,6 +143,11 @@ int main(int argc, char *argv[])
 		SoundEffect *go = new SoundEffect("music/go.mp3");
 		soundHashMap["go"] = go;
 
+		SoundEffect *trash1 = new SoundEffect("music/trash.wav");
+		soundHashMap["trash"] = trash1;
+
+		SoundEffect *throwtrash = new SoundEffect("music/throw.wav");
+		soundHashMap["throw"] = throwtrash;
 		// Generating different layers of our tilemap
 		TileMap *collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES, "map/sdl_stuff/collision.txt", "collision", COLL_PIXELS_HEIGHT / TILE_HEIGHT, COLL_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
 		TileMap *below_roadMap = new TileMap("map/sdl_stuff/below_road_tiles.png", BELOW_ROAD_TILE_TYPES, "map/sdl_stuff/below_road.txt", "below_road", BELOW_ROAD_PIXELS_HEIGHT / TILE_HEIGHT, BELOW_ROAD_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
@@ -190,7 +195,15 @@ int main(int argc, char *argv[])
 		{
 			profCoordinates[i] = roadCoordinates[profIndices[i]];
 		}
-		vector<Prof *> profsX = generateProfsX("assets/claude.png", profCoordinates, gRenderer);
+		vector<Prof*> profsX = generateProfsX("assets/claude.png", profCoordinates, gRenderer);
+		// Generate TrashBags 
+		vector<int> trashIndices = generateRandomVectorDistinct(TOTAL_TRASH, 0, roadCoordinates.size() - 1);
+		vector<pair<int, int>> trashCoordinates(TOTAL_TRASH);
+		for (int i = 0; i < TOTAL_TRASH; ++i)
+		{
+			trashCoordinates[i] = roadCoordinates[trashIndices[i]];
+		}
+		vector<Trash*> trash = generateTrash("assets/garbage.png", trashCoordinates, gRenderer);
 
 		cout << roadCoordinates.size() << endl;
 		cout << "Media Loaded\n";
@@ -217,9 +230,9 @@ int main(int argc, char *argv[])
 						quit = true;
 						cout << "Now Quitting....\n";
 					}
-					p1.handleEvent(e, yulus, gRenderer);
+					p1.handleEvent(e, yulus, trashMap->Map, soundHashMap, gRenderer);
 				}
-				p1.move(roadMap->Map, coins, gifts, profsX, soundHashMap, gRenderer);
+				p1.move(roadMap->Map, coins, gifts, profsX,trash, soundHashMap, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				p1.setCamera(camera);
@@ -233,9 +246,9 @@ int main(int argc, char *argv[])
 				// renderProfs(profsY, frame, camera, gRenderer);
 				renderGifts(gifts, camera, gRenderer);
 				renderCoins(coins, camera, gRenderer);
-
+				renderTrash(trash, camera, gRenderer);
 				p1.render(camera, frame % 6, gRenderer);
-
+				p2.renderCam(camera, frame%6, gRenderer);
 				// t1.setDimensions(20,20);
 				// t1.render(0,0,gRenderer);
 				SDL_RenderPresent(gRenderer);
@@ -272,9 +285,9 @@ int main(int argc, char *argv[])
 						quit = true;
 						cout << "Now Quitting....\n";
 					}
-					p2.handleEvent(e, yulus, gRenderer);
+					p2.handleEvent(e, yulus,trashMap->Map,soundHashMap,  gRenderer);
 				}
-				p2.move(roadMap->Map, coins, gifts, profsX, soundHashMap, gRenderer);
+				p2.move(roadMap->Map, coins, gifts, profsX,trash, soundHashMap, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				p2.setCamera(camera);
@@ -288,8 +301,9 @@ int main(int argc, char *argv[])
 				// renderProfs(profsY, frame, camera, gRenderer);
 				renderGifts(gifts, camera, gRenderer);
 				renderCoins(coins, camera, gRenderer);
+				renderTrash(trash, camera, gRenderer);
 				p2.render(camera, frame % 6, gRenderer);
-
+				p1.renderCam(camera, frame%6, gRenderer);
 				// t1.setDimensions(20,20);
 				// t1.render(0,0,gRenderer);
 				SDL_RenderPresent(gRenderer);

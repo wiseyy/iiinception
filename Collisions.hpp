@@ -10,7 +10,7 @@
 #include "TileMap.hpp"
 #include "Gift.hpp"
 #include "Prof.hpp"
-
+#include "Trash.hpp"
 
 using namespace std;
 
@@ -128,5 +128,36 @@ bool touchesGift(SDL_Rect obj, vector<Gift*> &gifts){
         }
     }
     // object touches no item
+    return false;
+}
+
+bool touchesTrash(SDL_Rect obj, vector<Trash*> &trash){
+    for(int i = 0; i<TOTAL_TRASH; ++i){
+        // if a collision between any item and object then touched trash
+        if(checkCollision(obj,trash[i]->getBox()) ){
+            return true;
+        }
+    }
+    // object touches no trash
+    return false;
+}
+
+int touchesTrashIndex(SDL_Rect obj, vector<Trash*> &trash){
+    for(int i = 0; i<TOTAL_TRASH; ++i){
+        // if a collision between any item and object then touched item
+        if(checkCollision(obj,trash[i]->getBox()) ){
+            return i;
+        }
+    }
+    // object touches no item
+    return -1;
+}
+
+bool touchesTrashCan(SDL_Rect obj, Tile* trashCan[]){
+    for(int i = 0; i< TOTAL_TILES ; ++i){
+        if(checkCollision(obj, trashCan[i]->getBox()) && trashCan[i]->getType() != 0 ){
+            return true;
+        }
+    }
     return false;
 }

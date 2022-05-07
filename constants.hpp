@@ -56,7 +56,7 @@ const int TRASH_TILE_TYPES = TRASH_PIXELS_HEIGHT/32 * TRASH_PIXELS_WIDTH/32;
 const int COIN_WIDTH = 25;
 const int COIN_HEIGHT = 25; 
 
-const int TOTAL_COINS = 300; 
+const int TOTAL_COINS = 200; 
 
 // Gift Dimensions
 const int GIFT_WIDTH = 25;
@@ -71,6 +71,12 @@ const int PROF_HEIGHT = 40;
 const int TOTAL_PROFS = 10;
 
 const int PROF_SPEED = 1;
+
+// TRASH DIMENSIONS
+const int TRASH_WIDTH = 30; 
+const int TRASH_HEIGHT = 30;
+
+const int TOTAL_TRASH = 300; 
 
 // Location offset
 const int LOC_OFFSET = 200;

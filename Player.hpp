@@ -3,6 +3,7 @@
 #include<iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <utility>
 #include<string>
 #include<vector>
@@ -12,7 +13,8 @@
 #include "SoundEffect.hpp"
 #include <unordered_map>
 #include "Prof.hpp"
-
+#include "Trash.hpp"
+#include "game.hpp"
 class Player{
 	public: 
 	// Dimensions of the player 
@@ -24,9 +26,9 @@ class Player{
 	Player(); 
 	Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Renderer);
 	// Handle the user input from keyboard or mouse
-	void handleEvent (SDL_Event &e, vector<SDL_Rect> &YuluLoc, SDL_Renderer* Renderer);
+	void handleEvent (SDL_Event &e, vector<SDL_Rect> &YuluLoc,Tile* trashTiles[],unordered_map<string, SoundEffect*> sounds, SDL_Renderer* Renderer);
 	// move player in each game loop
-	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList,vector<Prof*> &profListX, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer);
+	void move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList,vector<Prof*> &profListX, vector<Trash*> &trashList, unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer);
 	// render the player according to the camera
 	void render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer); 
 	// set the camera according to the player
@@ -50,12 +52,81 @@ class Player{
 	void setHappiness(int x){
 		happiness = x;
 	}
+	void renderCam(SDL_Rect &camera, int frame,  SDL_Renderer* Renderer);
 	// vector<SecretItem*> getItemList();
 	bool onYulu = false;
 	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
 	int yuluTimer = 0;
 	bool visitedHostel = false;
 	int status = 1;
+	Texture display(SDL_Renderer* Renderer)
+	{
+		Texture result;
+		string val = "";
+		val += "Coins :" + to_string(coins) + " " + "Trash Thrown :" + to_string(thrown) + " ";
+		val += "Current Trash :" + to_string(trash);
+		gFont = TTF_OpenFont("font/game-font.ttf",28);
+		SDL_Color textColor = {255,0,0};
+		if( gFont == NULL )
+		{
+			printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+			return result;
+		}
+		else
+		{
+			//Render text surface
+			SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, val.c_str(), textColor );
+			if( textSurface == NULL )
+			{
+				printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+				return result;
+			}
+			else
+			{
+				SDL_Texture* display = SDL_CreateTextureFromSurface(Renderer,textSurface);
+				result.setTexture(display);
+				result.setDimensions(textSurface->w,textSurface->h);
+				SDL_FreeSurface(textSurface);
+				//global font
+				TTF_CloseFont( gFont );
+				gFont = NULL;
+				return result;
+			}
+		}
+	}
+
+	Texture displayEvent(std::string event, SDL_Renderer* Renderer){
+		Texture result;
+		string val = event ;
+		gFont = TTF_OpenFont("font/game-font.ttf",28);
+		SDL_Color textColor = {255,0,0};
+		if( gFont == NULL )
+		{
+			printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+			return result;
+		}
+		else
+		{
+			//Render text surface
+			SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, val.c_str(), textColor );
+			if( textSurface == NULL )
+			{
+				printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+				return result;
+			}
+			else
+			{
+				SDL_Texture* display = SDL_CreateTextureFromSurface(Renderer,textSurface);
+				result.setTexture(display);
+				result.setDimensions(textSurface->w,textSurface->h);
+				SDL_FreeSurface(textSurface);
+				//global font
+				TTF_CloseFont( gFont );
+				gFont = NULL;
+				return result;
+			}
+		}
+	}
 private:
 	// Position of the player
 	int xPos, yPos;
@@ -97,9 +168,50 @@ Player::Player(std::string path, int x, int y, int vx, int vy, SDL_Renderer* Ren
 	} 
 	// SpriteTex.setDimensions(PLAYER_WIDTH, PLAYER_HEIGHT);
 }
-
-
-void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc,  SDL_Renderer* Renderer){
+void Player::renderCam(SDL_Rect &camera,int frame,  SDL_Renderer* Renderer){
+	SDL_Rect clip;
+	// If Player not on yulu 
+	if(!onYulu){
+		if (dir == 0){
+			clip = {frame%4 * SpriteTex.getWidth()/4, 0, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+		else if (dir == 1){
+			clip = {frame%3 * SpriteTex.getWidth()/4, SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+		else if (dir == 2){
+			clip = {frame%4* SpriteTex.getWidth()/4, 2*SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+		else if (dir == 3){
+			clip = {frame%4 * SpriteTex.getWidth()/4, 3*SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		} 
+		else{
+			clip = {0, 0, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+	}
+	// If player on Yulu 
+	else{
+		if (dir == 0){
+			clip = {frame%4 * SpriteTex.getWidth()/4, 0, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+		else if (dir == 2){
+			clip = {frame%4 * SpriteTex.getWidth()/4, SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+		else if (dir == 3){
+			clip = {frame%4* SpriteTex.getWidth()/4, 2*SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+		else if (dir == 1){
+			clip = {frame%4 * SpriteTex.getWidth()/4, 3*SpriteTex.getHeight()/4, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		} 
+		else{
+			clip = {0, 0, SpriteTex.getWidth()/4, SpriteTex.getHeight()/4};
+		}
+	}
+	SDL_Rect PlayerRect = {xPos - camera.x, yPos - camera.y,PLAYER_WIDTH, PLAYER_HEIGHT};
+	
+	if (xPos >= camera.x && xPos <= camera.x + camera.w && yPos >= camera.y && yPos <= camera.y + camera.h)
+		SDL_RenderCopy(Renderer, SpriteTex.getTexture(), &clip, &PlayerRect);
+}
+void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc, Tile* trashTiles[], unordered_map<string, SoundEffect*> sounds,   SDL_Renderer* Renderer){
     //If a key was pressed
     if ( e.type == SDL_KEYUP && e.key.repeat == 0 ){
     	//Adjust the velocity
@@ -150,6 +262,27 @@ void Player::handleEvent(SDL_Event& e, vector<SDL_Rect> &YuluLoc,  SDL_Renderer*
 	       		xVel = 0;
 	       		yVel = 0;
 	       		break;
+	       	case SDLK_t:
+	       	{
+	       		bool onTrashCan = false ;
+	       		// check if player touches any trash can
+	       		SDL_Rect obj = {collBox.x - 7, collBox.y - 7, collBox.w + 14, collBox.h + 14};
+	       		onTrashCan = touchesTrashCan(obj, trashTiles);
+	       		if(trash > 0 && trash <= 10 && onTrashCan){
+	       			thrown = trash ;
+	       			trash = 0;
+					coins += 10 ;
+	       			string ev =  "Trash Thrown \n";
+	       			Texture evt = displayEvent(ev,Renderer);
+	       			evt.render(0,SCREEN_HEIGHT-35, Renderer);
+	       			sounds["throw"]->play(0);
+	       		}
+	       		else{
+	       			string ev = "Collect some garbage to throw in the trash can\n";
+	       			Texture evt = displayEvent(ev,Renderer);
+	       			evt.render(0,SCREEN_HEIGHT-35, Renderer);
+	       		}
+	       	}
     	}
     }
 
@@ -196,7 +329,7 @@ SDL_Rect Player::getCollBox(){
 	return collBox; 
 }
 
-void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, vector<Prof*> &profListX,  unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer){
+void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftList, vector<Prof*> &profListX, vector<Trash*> &trashList,  unordered_map<string, SoundEffect*> &sounds, SDL_Renderer* Renderer){
 	// yulu Timer checks if player needs to get off yulu
     if (onYulu){
     	if(yuluTimer < 600){
@@ -249,6 +382,18 @@ void Player::move(Tile* roads[], vector<Coin*> &coinList, vector<Gift*> &giftLis
     	cout<<"Collided with an angry prof X"<<anger<<endl;
     	sounds["angry"]->play(0);
     }
+    if (touchesTrash(collBox, trashList)){
+    	if(trash < 10){
+    		int ind = touchesTrashIndex(collBox, trashList);
+    		trash++; 
+    		trashList[ind]->destroy();
+    		cout<< "Collected Trash Item\n";
+    		sounds["trash"]->play(0);
+    	}
+    	else{
+    		cout << "Cannot pick more trash... Throw some in trash cans\n";
+    	}
+    }
 }
 
 void Player::render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer){
@@ -291,6 +436,8 @@ void Player::render(SDL_Rect &camera, int frame, SDL_Renderer* Renderer){
 	}
 	SDL_Rect PlayerRect = {xPos - camera.x, yPos - camera.y,PLAYER_WIDTH, PLAYER_HEIGHT};
 	SDL_RenderCopy(Renderer, SpriteTex.getTexture(), &clip, &PlayerRect);
+	Texture meter = display(Renderer);
+	meter.render(0, 0, Renderer);
 }
 
 int Player::getCoins(){
