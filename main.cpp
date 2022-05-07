@@ -94,6 +94,7 @@ int main(int argc, char* argv[]) {
 		cout << "Could not initialize SDL\n";
 	}
 	else{
+
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
 		
@@ -156,7 +157,7 @@ int main(int argc, char* argv[]) {
 			}
 		}
 		Player p1  = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
-		// Player p2  = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+		Player p2  = Player("assets/boy2.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
 		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
@@ -186,19 +187,83 @@ int main(int argc, char* argv[]) {
 		SDL_Event e;
 		int frame = 0;
 		while(!quit){
-			frameStart = SDL_GetTicks();
+
+			if(server)
+			{
+				string param = from_client();
+				p2.set(param);
+				string messagetoClient = p1.get();
+				const char* mess = messagetoClient.c_str();
+				to_client(mess);
+
+				frameStart = SDL_GetTicks();
+
+				while(SDL_PollEvent(&e) != 0){
+					if( e.type == SDL_QUIT ){
+							quit = true;
+							cout << "Now Quitting....\n"; 
+					}
+					p1.handleEvent(e, yulus,  gRenderer);
+				}
+				p1.move(roadMap->Map, coins, gifts,profsX, soundHashMap, gRenderer);
+				moveProfs(profsX, roadMap->Map, gRenderer);
+				moveProfs(profsX, roadMap->Map, gRenderer);
+				p1.setCamera(camera);
+				SDL_RenderClear(gRenderer);
+				collisionMap->render(camera, gRenderer);
+				below_roadMap->render(camera, gRenderer);
+				roadMap->render(camera, gRenderer);
+				above_roadMap->render(camera, gRenderer);
+				trashMap->render(camera, gRenderer);
+				renderProfs(profsX, frame, camera, gRenderer);
+				// renderProfs(profsY, frame, camera, gRenderer);
+				renderGifts(gifts, camera, gRenderer);
+				renderCoins(coins, camera, gRenderer);
+
+				p1.render(camera, frame%6, gRenderer);
+				
+				
+
+				// t1.setDimensions(20,20);
+				// t1.render(0,0,gRenderer);
+				SDL_RenderPresent( gRenderer );
+
+				// reset angry attribute of profs after some frames
+				if (frame % 600 == 0){
+					for (auto prof : profsX){
+						prof->setAnger(getRandomInt(5, 30));
+					}
+				}
+				frameTime = SDL_GetTicks() - frameStart;
+				if(frameDelay > frameTime){
+					SDL_Delay(frameDelay - frameTime);
+				}
+					frame++;
+			}
+				cout<< p1.getHappiness()<<endl;
+				cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
+			}
+			else if(client)
+			{
+				string messagetoServer = p2.get();
+				const char* mess = messagetoServer.c_str();
+				to_server(mess);
+				string param = from_server();
+				p2.set(param);
+
+				frameStart = SDL_GetTicks();
 
 			while(SDL_PollEvent(&e) != 0){
 				if( e.type == SDL_QUIT ){
 						quit = true;
 						cout << "Now Quitting....\n"; 
 				}
-				p1.handleEvent(e, yulus,  gRenderer);
+				p2.handleEvent(e, yulus,  gRenderer);
 			}
-			p1.move(roadMap->Map, coins, gifts,profsX, soundHashMap, gRenderer);
+			p2.move(roadMap->Map, coins, gifts,profsX, soundHashMap, gRenderer);
 			moveProfs(profsX, roadMap->Map, gRenderer);
 			moveProfs(profsX, roadMap->Map, gRenderer);
-			p1.setCamera(camera);
+			p2.setCamera(camera);
 			SDL_RenderClear(gRenderer);
 			collisionMap->render(camera, gRenderer);
 			below_roadMap->render(camera, gRenderer);
@@ -209,7 +274,7 @@ int main(int argc, char* argv[]) {
 			// renderProfs(profsY, frame, camera, gRenderer);
 			renderGifts(gifts, camera, gRenderer);
 			renderCoins(coins, camera, gRenderer);
-			p1.render(camera, frame%6, gRenderer);
+			p2.render(camera, frame%6, gRenderer);
 			
 			
 
@@ -226,11 +291,14 @@ int main(int argc, char* argv[]) {
 			frameTime = SDL_GetTicks() - frameStart;
 			if(frameDelay > frameTime){
 				SDL_Delay(frameDelay - frameTime);
+				}
+				frame++;
 			}
-			frame++;
-		}
-		cout<< p1.getHappiness()<<endl;
-		cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
+			cout<< p2.getHappiness()<<endl;
+			cout<<"Well Played \n"<<"You collected "<<p2.getCoins()<<endl;
+			}
+
+			
 	}
     return 0;
 }

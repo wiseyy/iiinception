@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <utility>
+#include<string>
 #include<vector>
 #include "constants.hpp"
 #include "Texture.hpp"
@@ -35,6 +36,7 @@ class Player{
 	void getOnYulu(SDL_Renderer* Renderer);
 	void getOffYulu(SDL_Renderer* Renderer);
 	int getCoins();
+	vector<int> Player::get();
 	pair<int, int> getCoordinates(){
 		return {xPos, yPos};
 	}
@@ -51,6 +53,7 @@ class Player{
 	bool onYulu = false;
 	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
 	int yuluTimer = 0;
+
 private:
 	// Position of the player
 	int xPos, yPos;
@@ -65,6 +68,9 @@ private:
 	int health = 100;
 	int gifts = 0;
 	int happiness  = 100;
+	int trash = 0;
+	int thrown = 0;
+	int study = 50;
 	// vector<SecretItem*> items; 
 
 };
@@ -311,4 +317,90 @@ void Player::getOnYulu(SDL_Renderer* Renderer){
 	if(happiness > 100){
 		happiness = 100 ;
 	}
+
+string Player::get(){
+	vector<int> ch = {onYulu?1:0, dir, yuluTimer, xPos, yPos, xVel, yVel, coins, health, gifts, happiness, trash, thrown, study, visitedHostel?1:0, hunger};
+	
+	string ret = "";
+	for(int i = 0; i<ch.size(); i++){
+		ret += to_string(ch[i])+"_";
+	}
+	return ret;
+}
+
+void Player::set(string param){
+	int iter = 0;
+	int prev = 0;
+	for(int i=0; i<param.size();i++){
+		if(param[i]=='_'){
+			string curr = param.substr(prev, i-prev);
+			int now = stoi(curr);
+			prev = i+1;
+			if(iter == 0){
+				onYulu = (now == 1);
+				iter++;
+			}
+			else if(iter == 1){
+				dir = now;
+				iter++;
+			}
+			else if(iter == 2){
+				yuluTimer = now;
+				iter++;
+			}
+			else if(iter == 3){
+				xPos = now;
+				iter++;
+			}
+			else if(iter == 4){
+				yPos = now;
+				iter++;
+			}
+			else if(iter == 5){
+				xVel = now;
+				iter++;
+			}
+			else if(iter == 6){
+				yVel = now;
+				iter++;
+			}
+			else if(iter == 7){
+				coins = now;
+				iter++;
+			}
+			else if(iter == 8){
+				health = now;
+				iter++;
+			}
+			else if(iter == 9){
+				gifts = now;
+				iter++;
+			}
+			else if(iter == 10){
+				happiness = now;
+				iter++;
+			}
+			else if(iter == 11){
+				trash = now;
+				iter++;
+			}
+			else if(iter == 12){
+				thrown = now;
+				iter++;
+			}
+			else if(iter == 13){
+				study = now;
+				iter++;
+			}
+			else if(iter == 14){
+				visitedHostel = (now == 1);
+				iter++;
+			}
+			else if(iter == 15){
+				hunger = now;
+				iter++;
+			}
+		}
+	}
+}
 }

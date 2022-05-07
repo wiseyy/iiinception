@@ -34,8 +34,6 @@ int start_server(){
          exit(EXIT_FAILURE);
     }
 
-
-
     if (listen(server_fd, 3) < 0) {
         perror("listen");
         exit(EXIT_FAILURE);
