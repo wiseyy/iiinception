@@ -59,6 +59,6 @@ Make sure to avoid angry professors otherwise they will lower your (mental) heal
 ## Useful Links
 * To get the complete details of the project see [Task2 - SubTask1](https://www.cse.iitd.ac.in/~rijurekha/cop290_2022.html)
 * For SDL tutorials we used [Lazy Foo Tutorials](https://lazyfoo.net/tutorials/SDL/index.php) and the [Youtube Playlist](https://www.youtube.com/watch?v=QQzAHcojEKg&list=RDCMUCAM9ZPgEIdeHAsmG50wqL1g&start_radio=1&rv=QQzAHcojEKg&t=0)
-* For socket programming we reffered the [github repo](https://github.com/maciejspychala/sdl-game)
+* For socket programming we reffered the [article](https://www.geeksforgeeks.org/socket-programming-cc/)
 * In resources we used the following links for [icons](https://www.iconsdb.com/), [font](https://www.1001freefonts.com/), [sounds](https://www.soundjay.com/), [tilesets](https://www.vecteezy.com/free-vector/isometric-city), [image editing](https://www.remove.bg/upload).
 
