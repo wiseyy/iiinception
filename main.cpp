@@ -2,8 +2,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
-#include<vector>
-#include<utility>
+#include <vector>
+#include <utility>
 #include "game.hpp"
 #include "constants.hpp"
 #include "Random.hpp"
@@ -58,7 +58,7 @@ int16_t my_id = -1;
 //         }
 //         if (id >= 0) {
 //             check_if_its_new_player(id);
-            
+
 //         }
 //         usleep(50);
 //     }
@@ -66,146 +66,157 @@ int16_t my_id = -1;
 
 void loadYuluStations(vector<SDL_Rect> &yulus);
 
-int main(int argc, char* argv[]) {
-    cout << "Game Started";
-    cout<< "Screen Width : "<< SCREEN_WIDTH <<endl;
-	cout<< "Screen Height : "<< SCREEN_HEIGHT <<endl;
-	cout<< "MAP Width : "<< MAP_WIDTH <<endl;
-	cout<< "MAP Height : "<< MAP_HEIGHT <<endl;
-	cout<<"Total Tiles : "<< TOTAL_TILES<<endl;
+int main(int argc, char *argv[])
+{
+	cout << "Game Started";
+	cout << "Screen Width : " << SCREEN_WIDTH << endl;
+	cout << "Screen Height : " << SCREEN_HEIGHT << endl;
+	cout << "MAP Width : " << MAP_WIDTH << endl;
+	cout << "MAP Height : " << MAP_HEIGHT << endl;
+	cout << "Total Tiles : " << TOTAL_TILES << endl;
 
 	bool server = false;
-    bool client = false;
+	bool client = false;
 
 	string what = argv[1];
 
-    if(what.compare("s") == 0)
-    {
-        server = true;
-        start_server();
-    }
-    if(what.compare("c") == 0)
-    {
-        client = true;
-        start_client(argv[2]);
-    }
+	if (what.compare("s") == 0)
+	{
+		server = true;
+		start_server();
+	}
+	if (what.compare("c") == 0)
+	{
+		client = true;
+		start_client(argv[2]);
+	}
 
-	if (!init()){
+	if (!init())
+	{
 		cout << "Could not initialize SDL\n";
 	}
-	else{
+	else
+	{
 
 		cout << "SDL initialized successfully\n";
-		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
-		
+		SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+
 		// Marking the yulu stations
 		vector<SDL_Rect> yulus(8);
 		loadYuluStations(yulus);
 
 		// vector<SDL_Rect> hostels();
-		// Frame Rate 
-		Uint32 frameStart = 60; 
-		int frameTime; 
+		// Frame Rate
+		Uint32 frameStart = 60;
+		int frameTime;
 
-		// loading sound effects    
-		unordered_map <string, SoundEffect* > soundHashMap; 
+		// loading sound effects
+		unordered_map<string, SoundEffect *> soundHashMap;
 		// sound effect for coin
-		SoundEffect* coin = new SoundEffect("music/coin.wav");
+		SoundEffect *coin = new SoundEffect("music/coin.wav");
 		soundHashMap["coin"] = coin;
 		// sound effect for collecting gift
-		SoundEffect* gift = new SoundEffect("music/gift.wav");
+		SoundEffect *gift = new SoundEffect("music/gift.wav");
 		soundHashMap["gift"] = gift;
 
-		SoundEffect* main = new SoundEffect("music/main.mp3");
+		SoundEffect *main = new SoundEffect("music/main.mp3");
 		soundHashMap["main"] = main;
 
-		SoundEffect* dog = new SoundEffect("music/dog.wav");
+		SoundEffect *dog = new SoundEffect("music/dog.wav");
 		soundHashMap["dog"] = dog;
 
-		SoundEffect* yulu = new SoundEffect("music/yulu.wav");
+		SoundEffect *yulu = new SoundEffect("music/yulu.wav");
 		soundHashMap["yulu"] = yulu;
 
-		SoundEffect* win = new SoundEffect("music/win.wav");
+		SoundEffect *win = new SoundEffect("music/win.wav");
 		soundHashMap["win"] = win;
 
-		SoundEffect* lose = new SoundEffect("music/lose.flac");
+		SoundEffect *lose = new SoundEffect("music/lose.flac");
 		soundHashMap["lose"] = lose;
 
-		SoundEffect* mission = new SoundEffect("music/mission.wav");
+		SoundEffect *mission = new SoundEffect("music/mission.wav");
 		soundHashMap["mission"] = mission;
 
-		SoundEffect* angry = new SoundEffect("music/angry.wav");
+		SoundEffect *angry = new SoundEffect("music/angry.wav");
 		soundHashMap["angry"] = angry;
 
-		SoundEffect* go = new SoundEffect("music/go.mp3");
+		SoundEffect *go = new SoundEffect("music/go.mp3");
 		soundHashMap["go"] = go;
 
 		// Generating different layers of our tilemap
-		TileMap* collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES,"map/sdl_stuff/collision.txt","collision",COLL_PIXELS_HEIGHT/TILE_HEIGHT, COLL_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
-		TileMap* below_roadMap = new TileMap("map/sdl_stuff/below_road_tiles.png", BELOW_ROAD_TILE_TYPES, "map/sdl_stuff/below_road.txt", "below_road", BELOW_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, BELOW_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
-		TileMap* roadMap = new TileMap("map/sdl_stuff/road_tiles.png", ROAD_TILE_TYPES, "map/sdl_stuff/road.txt", "road", ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
-		TileMap* above_roadMap = new TileMap("map/sdl_stuff/above_road_tiles.png", ABOVE_ROAD_TILE_TYPES, "map/sdl_stuff/above_road.txt", "above_road", ABOVE_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ABOVE_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
-		TileMap* trashMap = new TileMap("map/sdl_stuff/trash_tiles.png",TRASH_TILE_TYPES,"map/sdl_stuff/trash.txt","trash",TRASH_PIXELS_HEIGHT/TILE_HEIGHT, TRASH_PIXELS_WIDTH/TILE_WIDTH, gRenderer );
-		
+		TileMap *collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES, "map/sdl_stuff/collision.txt", "collision", COLL_PIXELS_HEIGHT / TILE_HEIGHT, COLL_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
+		TileMap *below_roadMap = new TileMap("map/sdl_stuff/below_road_tiles.png", BELOW_ROAD_TILE_TYPES, "map/sdl_stuff/below_road.txt", "below_road", BELOW_ROAD_PIXELS_HEIGHT / TILE_HEIGHT, BELOW_ROAD_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
+		TileMap *roadMap = new TileMap("map/sdl_stuff/road_tiles.png", ROAD_TILE_TYPES, "map/sdl_stuff/road.txt", "road", ROAD_PIXELS_HEIGHT / TILE_HEIGHT, ROAD_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
+		TileMap *above_roadMap = new TileMap("map/sdl_stuff/above_road_tiles.png", ABOVE_ROAD_TILE_TYPES, "map/sdl_stuff/above_road.txt", "above_road", ABOVE_ROAD_PIXELS_HEIGHT / TILE_HEIGHT, ABOVE_ROAD_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
+		TileMap *trashMap = new TileMap("map/sdl_stuff/trash_tiles.png", TRASH_TILE_TYPES, "map/sdl_stuff/trash.txt", "trash", TRASH_PIXELS_HEIGHT / TILE_HEIGHT, TRASH_PIXELS_WIDTH / TILE_WIDTH, gRenderer);
+
 		main->play(-1);
 
 		// Generating road coordinates
-		vector<pair<int, int>> roadCoordinates; 
-		for(int i = 0; i<TOTAL_TILES; ++i){
-			if ((roadMap->Map[i])->getType() != 0){
+		vector<pair<int, int>> roadCoordinates;
+		for (int i = 0; i < TOTAL_TILES; ++i)
+		{
+			if ((roadMap->Map[i])->getType() != 0)
+			{
 				roadCoordinates.push_back((roadMap->Map[i])->getCoordinates());
 			}
 		}
-		Player p1  = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
-		Player p2  = Player("assets/boy2.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+		Player p1 = Player("assets/boy.png", roadCoordinates[0].first, roadCoordinates[0].second, 0, 0, gRenderer);
+		Player p2 = Player("assets/boy2.png", roadCoordinates[0].first, roadCoordinates[0].second, 0, 0, gRenderer);
 		// Generating coins for the map
-		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
+		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size() - 1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
-		for(int i = 0; i<TOTAL_COINS; ++i){
+		for (int i = 0; i < TOTAL_COINS; ++i)
+		{
 			coinCoordinates[i] = roadCoordinates[coinIndices[i]];
 		}
-		vector<Coin*> coins = generateCoins("assets/coin.png", coinCoordinates, gRenderer);
+		vector<Coin *> coins = generateCoins("assets/coin.png", coinCoordinates, gRenderer);
 
 		// Generating Gifts for the map
-		vector<int> giftIndices = generateRandomVectorDistinct(TOTAL_GIFTS, 0, roadCoordinates.size()-1);
+		vector<int> giftIndices = generateRandomVectorDistinct(TOTAL_GIFTS, 0, roadCoordinates.size() - 1);
 		vector<pair<int, int>> giftCoordinates(TOTAL_GIFTS);
-		for(int i = 0; i<TOTAL_GIFTS; ++i){
+		for (int i = 0; i < TOTAL_GIFTS; ++i)
+		{
 			giftCoordinates[i] = roadCoordinates[giftIndices[i]];
 		}
-		vector<Gift*> gifts = generateGifts("assets/box.png", giftCoordinates, gRenderer);
+		vector<Gift *> gifts = generateGifts("assets/box.png", giftCoordinates, gRenderer);
 		// Generate Angry Professors
-		vector<int> profIndices = generateRandomVectorDistinct(TOTAL_PROFS, 0, roadCoordinates.size()-1);
+		vector<int> profIndices = generateRandomVectorDistinct(TOTAL_PROFS, 0, roadCoordinates.size() - 1);
 		vector<pair<int, int>> profCoordinates(TOTAL_PROFS);
-		for(int i = 0; i<TOTAL_PROFS; ++i){
+		for (int i = 0; i < TOTAL_PROFS; ++i)
+		{
 			profCoordinates[i] = roadCoordinates[profIndices[i]];
 		}
-		vector<Prof*> profsX = generateProfsX("assets/claude.png", profCoordinates, gRenderer);
-		
-		cout<< roadCoordinates.size()<<endl;
-		cout<<"Media Loaded\n";
+		vector<Prof *> profsX = generateProfsX("assets/claude.png", profCoordinates, gRenderer);
+
+		cout << roadCoordinates.size() << endl;
+		cout << "Media Loaded\n";
 		bool quit = false;
 		SDL_Event e;
 		int frame = 0;
-		while(!quit){
+		while (!quit)
+		{
 
-			if(server)
+			if (server)
 			{
-				string param = from_client();
-				p2.set(param);
-				string messagetoClient = p1.get();
-				const char* mess = messagetoClient.c_str();
-				to_client(mess);
+				// string param = from_client();
+				// p2.set(param);
+				// string messagetoClient = p1.get();
+				// const char *mess = messagetoClient.c_str();
+				// to_client(mess);
 
 				frameStart = SDL_GetTicks();
 
-				while(SDL_PollEvent(&e) != 0){
-					if( e.type == SDL_QUIT ){
-							quit = true;
-							cout << "Now Quitting....\n"; 
+				while (SDL_PollEvent(&e) != 0)
+				{
+					if (e.type == SDL_QUIT)
+					{
+						quit = true;
+						cout << "Now Quitting....\n";
 					}
-					p1.handleEvent(e, yulus,  gRenderer);
+					p1.handleEvent(e, yulus, gRenderer);
 				}
-				p1.move(roadMap->Map, coins, gifts,profsX, soundHashMap, gRenderer);
+				p1.move(roadMap->Map, coins, gifts, profsX, soundHashMap, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				moveProfs(profsX, roadMap->Map, gRenderer);
 				p1.setCamera(camera);
@@ -220,90 +231,87 @@ int main(int argc, char* argv[]) {
 				renderGifts(gifts, camera, gRenderer);
 				renderCoins(coins, camera, gRenderer);
 
-				p1.render(camera, frame%6, gRenderer);
-				
-				
+				p1.render(camera, frame % 6, gRenderer);
 
 				// t1.setDimensions(20,20);
 				// t1.render(0,0,gRenderer);
-				SDL_RenderPresent( gRenderer );
+				SDL_RenderPresent(gRenderer);
 
 				// reset angry attribute of profs after some frames
-				if (frame % 600 == 0){
-					for (auto prof : profsX){
+				if (frame % 600 == 0)
+				{
+					for (auto prof : profsX)
+					{
 						prof->setAnger(getRandomInt(5, 30));
 					}
 				}
 				frameTime = SDL_GetTicks() - frameStart;
-				if(frameDelay > frameTime){
+				if (frameDelay > frameTime)
+				{
 					SDL_Delay(frameDelay - frameTime);
-				}
-					frame++;
-			}
-				cout<< p1.getHappiness()<<endl;
-				cout<<"Well Played \n"<<"You collected "<<p1.getCoins()<<endl;
-			}
-			else if(client)
-			{
-				string messagetoServer = p2.get();
-				const char* mess = messagetoServer.c_str();
-				to_server(mess);
-				string param = from_server();
-				p2.set(param);
-
-				frameStart = SDL_GetTicks();
-
-			while(SDL_PollEvent(&e) != 0){
-				if( e.type == SDL_QUIT ){
-						quit = true;
-						cout << "Now Quitting....\n"; 
-				}
-				p2.handleEvent(e, yulus,  gRenderer);
-			}
-			p2.move(roadMap->Map, coins, gifts,profsX, soundHashMap, gRenderer);
-			moveProfs(profsX, roadMap->Map, gRenderer);
-			moveProfs(profsX, roadMap->Map, gRenderer);
-			p2.setCamera(camera);
-			SDL_RenderClear(gRenderer);
-			collisionMap->render(camera, gRenderer);
-			below_roadMap->render(camera, gRenderer);
-			roadMap->render(camera, gRenderer);
-			above_roadMap->render(camera, gRenderer);
-			trashMap->render(camera, gRenderer);
-			renderProfs(profsX, frame, camera, gRenderer);
-			// renderProfs(profsY, frame, camera, gRenderer);
-			renderGifts(gifts, camera, gRenderer);
-			renderCoins(coins, camera, gRenderer);
-			p2.render(camera, frame%6, gRenderer);
-			
-			
-
-			// t1.setDimensions(20,20);
-			// t1.render(0,0,gRenderer);
-			SDL_RenderPresent( gRenderer );
-
-			// reset angry attribute of profs after some frames
-			if (frame % 600 == 0){
-				for (auto prof : profsX){
-					prof->setAnger(getRandomInt(5, 30));
-				}
-			}
-			frameTime = SDL_GetTicks() - frameStart;
-			if(frameDelay > frameTime){
-				SDL_Delay(frameDelay - frameTime);
 				}
 				frame++;
 			}
-			cout<< p2.getHappiness()<<endl;
-			cout<<"Well Played \n"<<"You collected "<<p2.getCoins()<<endl;
-			}
+			else if (client)
+			{
+				// 		// string messagetoServer = p2.get();
+				// 		// const char *mess = messagetoServer.c_str();
+				// 		// to_server(mess);
+				// 		// string param = from_server();
+				// 		// p2.set(param);
 
-			
+				frameStart = SDL_GetTicks();
+
+				while (SDL_PollEvent(&e) != 0)
+				{
+					if (e.type == SDL_QUIT)
+					{
+						quit = true;
+						cout << "Now Quitting....\n";
+					}
+					p2.handleEvent(e, yulus, gRenderer);
+				}
+				p2.move(roadMap->Map, coins, gifts, profsX, soundHashMap, gRenderer);
+				moveProfs(profsX, roadMap->Map, gRenderer);
+				moveProfs(profsX, roadMap->Map, gRenderer);
+				p2.setCamera(camera);
+				SDL_RenderClear(gRenderer);
+				collisionMap->render(camera, gRenderer);
+				below_roadMap->render(camera, gRenderer);
+				roadMap->render(camera, gRenderer);
+				above_roadMap->render(camera, gRenderer);
+				trashMap->render(camera, gRenderer);
+				renderProfs(profsX, frame, camera, gRenderer);
+				// renderProfs(profsY, frame, camera, gRenderer);
+				renderGifts(gifts, camera, gRenderer);
+				renderCoins(coins, camera, gRenderer);
+				p2.render(camera, frame % 6, gRenderer);
+
+				// t1.setDimensions(20,20);
+				// t1.render(0,0,gRenderer);
+				SDL_RenderPresent(gRenderer);
+
+				// reset angry attribute of profs after some frames
+				if (frame % 600 == 0)
+				{
+					for (auto prof : profsX)
+					{
+						prof->setAnger(getRandomInt(5, 30));
+					}
+				}
+				frameTime = SDL_GetTicks() - frameStart;
+				if (frameDelay > frameTime)
+				{
+					SDL_Delay(frameDelay - frameTime);
+				}
+				frame++;
+			}
+		}
 	}
-    return 0;
 }
 
-void loadYuluStations(vector<SDL_Rect> &yulus){
+void loadYuluStations(vector<SDL_Rect> &yulus)
+{
 	yulus[0] = yulu1;
 	yulus[1] = yulu2;
 	yulus[2] = yulu3;
@@ -314,7 +322,8 @@ void loadYuluStations(vector<SDL_Rect> &yulus){
 	yulus[7] = yulu8;
 }
 
-void makeLocationHashMap(unordered_map<string, SDL_Rect>  &loc){
+void makeLocationHashMap(unordered_map<string, SDL_Rect> &loc)
+{
 	loc["YuluStand1"] = yulu1;
 	loc["YuluStand2"] = yulu2;
 	loc["YuluStand3"] = yulu3;
