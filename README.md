@@ -1,6 +1,7 @@
 # iiinception
 
 The aim of the project is to build a maze game based over the IIT-Delhi Campus which gives a compelling experience to the user.
+
 ![mainscreen](assets/bg.png "iiinception")
 
 ## Requirements
