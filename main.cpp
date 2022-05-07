@@ -75,6 +75,16 @@ int main(int argc, char* argv[]) {
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };	
 		
+		vector<SDL_Rect> yulus(8);
+		yulus[0] = {yulu1.first, yulu1.second, LOC_OFFSET, LOC_OFFSET};
+		yulus[1] = {yulu2.first, yulu2.second, LOC_OFFSET, LOC_OFFSET};
+		yulus[2] = {yulu3.first, yulu3.second, LOC_OFFSET, LOC_OFFSET};
+		yulus[3] = {yulu4.first, yulu4.second, LOC_OFFSET, LOC_OFFSET};
+		yulus[4] = {yulu5.first, yulu5.second, LOC_OFFSET, LOC_OFFSET};
+		yulus[5] = {yulu6.first, yulu6.second, LOC_OFFSET, LOC_OFFSET};
+		yulus[6] = {yulu7.first, yulu7.second, LOC_OFFSET, LOC_OFFSET};
+		yulus[7] = {yulu8.first, yulu8.second, LOC_OFFSET, LOC_OFFSET};
+
 		// Frame Rate 
 		Uint32 frameStart = 60; 
 		int frameTime; 
@@ -165,7 +175,7 @@ int main(int argc, char* argv[]) {
 						quit = true;
 						cout << "Now Quitting....\n"; 
 				}
-				p1.handleEvent(e, gRenderer);
+				p1.handleEvent(e, yulus,  gRenderer);
 			}
 			p1.move(roadMap->Map, coins, gifts,profsX, soundHashMap, gRenderer);
 			moveProfs(profsX, roadMap->Map, gRenderer);

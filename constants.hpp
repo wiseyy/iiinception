@@ -1,5 +1,9 @@
 #pragma once
 
+#include<iostream>
+#include<utility>
+
+using namespace std;
 // frame Rate 
 const int FPS = 60;
 const int frameDelay = 1000/FPS ;
@@ -67,3 +71,16 @@ const int PROF_HEIGHT = 40;
 const int TOTAL_PROFS = 10;
 
 const int PROF_SPEED = 1;
+
+// Location offset
+const int LOC_OFFSET = 200;
+
+// YULU Locations
+pair<int, int> yulu1 = {1695, 506} ;
+pair<int, int> yulu2 = {1529, 3381};
+pair<int, int> yulu3 = {5320, 3053};
+pair<int, int> yulu4 = {5947, 3044};
+pair<int, int> yulu5 = {5570, 1664};
+pair<int, int> yulu6 = {10269, 751};
+pair<int, int> yulu7 = {8475, 2657};
+pair<int, int> yulu8 = {7704, 2689};
