@@ -37,3 +37,7 @@ play
 dependencies
 
 game
+
+client.hpp
+server.hpp
+network.hpp

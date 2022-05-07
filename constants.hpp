@@ -8,6 +8,12 @@ const int frameDelay = 1000/FPS ;
 const int SCREEN_WIDTH = 1440;
 const int SCREEN_HEIGHT = 960;
 
+const int MAX_PLAYERS = 2;
+const int TAB = 1;
+const int BUF_MAX = 256;
+
+const int SERVER_PORT = 6666;
+
 //Tile constants
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;

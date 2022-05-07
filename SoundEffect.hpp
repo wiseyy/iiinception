@@ -18,6 +18,9 @@ public:
 	void play(int i){
 		Mix_PlayChannel( -1, effect, i );
 	}
+	// void loop(int i){
+	// 	Mix_PlayMusic(, );
+	// }
 private:
 	Mix_Chunk *effect = NULL;
 };
