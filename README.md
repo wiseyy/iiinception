@@ -50,6 +50,12 @@ Pick garbage and throw in trashcans to earn bonus points for cleaning the campus
 
 Pick garbage and throw in trashcans to earn bonus points for cleaning the campus!
 
+### Angry Professor
+<!-- ![gameplay](map/can.png "trashcans" =64x64) -->
+<img src="asset/prof.png" width="64" height="64">
+
+Make sure to avoid angry professors otherwise they will lower your (mental) health!
+
 ## Pointing System
 
 ## Useful Links
