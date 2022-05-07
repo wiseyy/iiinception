@@ -16,6 +16,9 @@
 #include <unordered_map>
 #include "Prof.hpp"
 
+#include "client.hpp"
+#include "server.hpp"
+
 using namespace std;
 
 Player players[MAX_PLAYERS];
@@ -70,6 +73,23 @@ int main(int argc, char* argv[]) {
 	cout<< "MAP Width : "<< MAP_WIDTH <<endl;
 	cout<< "MAP Height : "<< MAP_HEIGHT <<endl;
 	cout<<"Total Tiles : "<< TOTAL_TILES<<endl;
+
+	bool server = false;
+    bool client = false;
+
+	string what = argv[1];
+
+    if(what.compare("s") == 0)
+    {
+        server = true;
+        start_server();
+    }
+    if(what.compare("c") == 0)
+    {
+        client = true;
+        start_client(argv[2]);
+    }
+
 	if (!init()){
 		cout << "Could not initialize SDL\n";
 	}
