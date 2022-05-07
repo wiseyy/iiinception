@@ -1,9 +1,9 @@
 #pragma once 
 
 #include<iostream>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_mixer.h"
 #include "constants.hpp"
 using namespace std;
 
@@ -13,6 +13,7 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 // Function to initialize the SDL subsystems
 bool init();
+
 
 bool init(){
 	//Initialization flag
