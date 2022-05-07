@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 
 		cout << "SDL initialized successfully\n";
 		SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-
+		
 		// Marking the yulu stations
 		vector<SDL_Rect> yulus(8);
 		loadYuluStations(yulus);

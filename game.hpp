@@ -5,6 +5,7 @@
 #include "SDL_image.h"
 #include "SDL_mixer.h"
 #include "constants.hpp"
+#include "Texture.hpp"
 using namespace std;
 
 //The window we'll be rendering to
@@ -14,10 +15,12 @@ SDL_Renderer* gRenderer = NULL;
 // Function to initialize the SDL subsystems
 bool init();
 
+Texture start;
 
 bool init(){
 	//Initialization flag
 	bool success = true;
+	
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0 ){
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
@@ -61,5 +64,9 @@ bool init(){
 			}
 		}
 	}
+	start.loadfromFile("assets/bg.png", gRenderer);
+	start.render(0, 0, gRenderer);
+	SDL_RenderPresent(gRenderer);
+	SDL_Delay(5000);
 	return success;
 }
