@@ -1,7 +1,7 @@
 #include <iostream>
 #include "SDL.h"
 #include "SDL_image.h"
-#include <SDL2/SDL_mixer.h>
+#include "SDL_mixer.h"
 #include<vector>
 #include<utility>
 #include "game.hpp"
@@ -18,7 +18,50 @@
 
 using namespace std;
 
-int main() {
+Player players[MAX_PLAYERS];
+int number_of_players = 0;
+int16_t my_id = -1;
+
+// void init_players() {
+//     int i;
+//     for (i = 0; i < MAX_PLAYERS; i++) {
+// 		players[i] = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+//     }
+// }
+
+// void receive_new_id(int id) {
+//     my_id = id;
+//     number_of_players = id;
+//     printf("my_id is now: %d\n", my_id);
+// }
+
+// void check_if_its_new_player(int id){
+//     if (id > number_of_players) {
+//         number_of_players = id;
+//         printf("new max player, now %d\n", number_of_players + 1);
+//     }
+// }
+
+// void* client_loop(void *arg) {
+//     int socket = *((int *) arg);
+//     int16_t tab[BUF_MAX];
+//     int length;
+//     int id
+//     while (1) {
+//         length = client_listen(socket, tab);
+//         id = tab[0];
+//         if (id == -1) {
+//             receive_new_id(tab[1]);
+//         }
+//         if (id >= 0) {
+//             check_if_its_new_player(id);
+            
+//         }
+//         usleep(50);
+//     }
+// }
+
+int main(int argc, char* argv[]) {
     cout << "Game Started";
     cout<< "Screen Width : "<< SCREEN_WIDTH <<endl;
 	cout<< "Screen Height : "<< SCREEN_HEIGHT <<endl;
@@ -42,8 +85,32 @@ int main() {
 		SoundEffect* coin = new SoundEffect("music/coin.wav");
 		soundHashMap["coin"] = coin;
 		// sound effect for collecting gift
-		SoundEffect* gift = new SoundEffect("music/gift.mp3");
+		SoundEffect* gift = new SoundEffect("music/gift.wav");
 		soundHashMap["gift"] = gift;
+
+		SoundEffect* main = new SoundEffect("music/main.mp3");
+		soundHashMap["main"] = main;
+
+		SoundEffect* dog = new SoundEffect("music/dog.wav");
+		soundHashMap["dog"] = dog;
+
+		SoundEffect* yulu = new SoundEffect("music/yulu.wav");
+		soundHashMap["yulu"] = yulu;
+
+		SoundEffect* win = new SoundEffect("music/win.wav");
+		soundHashMap["win"] = win;
+
+		SoundEffect* lose = new SoundEffect("music/lose.flac");
+		soundHashMap["lose"] = lose;
+
+		SoundEffect* mission = new SoundEffect("music/mission.wav");
+		soundHashMap["mission"] = mission;
+
+		SoundEffect* angry = new SoundEffect("music/angry.wav");
+		soundHashMap["angry"] = angry;
+
+		SoundEffect* go = new SoundEffect("music/go.mp3");
+		soundHashMap["go"] = go;
 
 		// Generating different layers of our tilemap
 		TileMap* collisionMap = new TileMap("map/sdl_stuff/collision_tiles.png", COLL_TILE_TYPES,"map/sdl_stuff/collision.txt","collision",COLL_PIXELS_HEIGHT/TILE_HEIGHT, COLL_PIXELS_WIDTH/TILE_WIDTH, gRenderer);
@@ -52,6 +119,8 @@ int main() {
 		TileMap* above_roadMap = new TileMap("map/sdl_stuff/above_road_tiles.png", ABOVE_ROAD_TILE_TYPES, "map/sdl_stuff/above_road.txt", "above_road", ABOVE_ROAD_PIXELS_HEIGHT/TILE_HEIGHT, ABOVE_ROAD_PIXELS_WIDTH/TILE_WIDTH,gRenderer);
 		TileMap* trashMap = new TileMap("map/sdl_stuff/trash_tiles.png",TRASH_TILE_TYPES,"map/sdl_stuff/trash.txt","trash",TRASH_PIXELS_HEIGHT/TILE_HEIGHT, TRASH_PIXELS_WIDTH/TILE_WIDTH, gRenderer );
 		
+		main->play(-1);
+
 		// Generating road coordinates
 		vector<pair<int, int>> roadCoordinates; 
 		for(int i = 0; i<TOTAL_TILES; ++i){
@@ -59,7 +128,6 @@ int main() {
 				roadCoordinates.push_back((roadMap->Map[i])->getCoordinates());
 			}
 		}
-		// generating player on the road
 		Player p1 = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
 		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);

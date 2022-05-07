@@ -15,8 +15,8 @@
 class Player{
 	public: 
 	// Dimensions of the player 
-	static const int PLAYER_WIDTH = 35;
-	static const int PLAYER_HEIGHT = 35;
+	static const int PLAYER_WIDTH = 30;
+	static const int PLAYER_HEIGHT = 30;
 
 	int PLAYER_VEL = 10;
 	// Constructors for the Player
