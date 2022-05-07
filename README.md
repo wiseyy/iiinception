@@ -21,7 +21,7 @@ To play the game, follow the following instructions.
 
 ## Objective
 
-The objective of the game is to meet with your COP290 teammate at 5 random location chosen by your teammate, while doing some tasks that he asks you to do. Make sure you reach to the location in time otherwise your teammate will complain to ma'am that you don't contribute to the project! Collect coins and eat food at mess to gain health and complete the project before your friend to get more points. The end points are decided by the quality of the project and bonus points for being the first person to give the demo. 
+The objective of the game is to meet with your COP290 teammate at 3 random location chosen by your teammate, while doing some tasks that he asks you to do. Make sure you reach to the location in time otherwise your teammate will complain to ma'am that you don't contribute to the project! Collect coins and eat food at mess to gain health and complete the project before your friend to get more points. The end points are decided by the quality of the project and bonus points for being the first person to give the demo. 
 You can also earn bonus points by being a good human being and putting the garbage on the roads into the trashcans nearby!
 
 ## Assets
@@ -36,7 +36,7 @@ Pick coins to earn money and be more productive, and eat better!
 <!-- ![gameplay](assets/box.png "giftbox" =64x64) -->
 <img src="assets/box.png" width="64" height="64">
 
-Pick giftbox to earn random boost in your player's characteristics!
+Pick giftbox to earn random but low points!
 
 ### Garbage
 <!-- ![gameplay](assets/garbage.png "garbage" =64x64) -->
