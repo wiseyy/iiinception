@@ -36,7 +36,8 @@ class Player{
 	void getOnYulu(SDL_Renderer* Renderer);
 	void getOffYulu(SDL_Renderer* Renderer);
 	int getCoins();
-	vector<int> Player::get();
+	string get();
+	void set(string param);
 	pair<int, int> getCoordinates(){
 		return {xPos, yPos};
 	}
@@ -53,7 +54,7 @@ class Player{
 	bool onYulu = false;
 	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
 	int yuluTimer = 0;
-
+	bool visitedHostel = false;
 private:
 	// Position of the player
 	int xPos, yPos;
@@ -72,6 +73,7 @@ private:
 	int thrown = 0;
 	int study = 50;
 	// vector<SecretItem*> items; 
+	int hunger = 0;
 
 };
 
@@ -317,7 +319,7 @@ void Player::getOnYulu(SDL_Renderer* Renderer){
 	if(happiness > 100){
 		happiness = 100 ;
 	}
-
+}
 string Player::get(){
 	vector<int> ch = {onYulu?1:0, dir, yuluTimer, xPos, yPos, xVel, yVel, coins, health, gifts, happiness, trash, thrown, study, visitedHostel?1:0, hunger};
 	
@@ -402,5 +404,5 @@ void Player::set(string param){
 			}
 		}
 	}
-}
+
 }
