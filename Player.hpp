@@ -63,11 +63,8 @@ class Player{
 	bool onYulu = false;
 	int dir = 0;    //  0 for right , 1 for down , 2 for left , 3 for up 
 	int yuluTimer = 0;
-<<<<<<< HEAD
 	bool visitedHostel = false;
 	int status = 1;
-=======
->>>>>>> hemank
 	Texture display(SDL_Renderer* Renderer)
 	{
 		Texture result;
@@ -137,7 +134,6 @@ class Player{
 		}
 	}
 	// extra features
-	bool visitedHostel = false;
 	bool ateFood = false;
 	int coins = 100; 
 	int health = 100;
