@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
+#include "SDL_ttf.h"
 #include "constants.hpp"
 using namespace std;
 
@@ -11,6 +12,7 @@ using namespace std;
 SDL_Window* gWindow = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
+TTF_Font* gFont = NULL;
 // Function to initialize the SDL subsystems
 bool init();
 
@@ -51,6 +53,14 @@ bool init(){
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+
+				//Initialize SDL_ttf
+				if( TTF_Init() == -1 )
+				{
+					printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+					success = false;
+				}
+
 
 				//Initialize SDL_mixer
                 if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
