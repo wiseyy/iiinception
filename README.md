@@ -1,7 +1,7 @@
 # iiinception
 
 The aim of the project is to build a maze game based over the IIT-Delhi Campus which gives a compelling experience to the user.
-![mainscreen]()
+![mainscreen](assets/bg.png "iiinception")
 
 ## Requirements
 * This program requires the SDL2 library, along with SDL2_image, SDL2_mixer, SDL2_ttf.
