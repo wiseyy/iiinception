@@ -101,6 +101,7 @@ int main(int argc, char* argv[]) {
 		vector<SDL_Rect> yulus(8);
 		loadYuluStations(yulus);
 
+		// vector<SDL_Rect> hostels();
 		// Frame Rate 
 		Uint32 frameStart = 60; 
 		int frameTime; 
@@ -154,7 +155,8 @@ int main(int argc, char* argv[]) {
 				roadCoordinates.push_back((roadMap->Map[i])->getCoordinates());
 			}
 		}
-		Player p1 = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+		Player p1  = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
+		// Player p2  = Player("assets/boy.png", roadCoordinates[0].first ,roadCoordinates[0].second, 0,0,gRenderer);
 		// Generating coins for the map
 		vector<int> coinIndices = generateRandomVectorDistinct(TOTAL_COINS, 0, roadCoordinates.size()-1);
 		vector<pair<int, int>> coinCoordinates(TOTAL_COINS);
@@ -242,4 +244,67 @@ void loadYuluStations(vector<SDL_Rect> &yulus){
 	yulus[5] = yulu6;
 	yulus[6] = yulu7;
 	yulus[7] = yulu8;
+}
+
+void makeLocationHashMap(unordered_map<string, SDL_Rect>  &loc){
+	loc["YuluStand1"] = yulu1;
+	loc["YuluStand2"] = yulu2;
+	loc["YuluStand3"] = yulu3;
+	loc["YuluStand4"] = yulu4;
+	loc["YuluStand5"] = yulu5;
+	loc["YuluStand6"] = yulu6;
+	loc["YuluStand7"] = yulu7;
+	loc["YuluStand8"] = yulu8;
+	loc["Satpura"] = satpura;
+	loc["Girnar"] = girnar;
+	loc["Himadri"] = himadri;
+	loc["Kailash"] = kailash;
+	loc["Jwalamukhi"] = jwala;
+	loc["Vindy"] = vindy;
+	loc["Zanskar"] = zanskar;
+	loc["Shivalik"] = shivalik;
+	loc["Kumaon"] = kumaon;
+	loc["Nalanda"] = nalanda;
+	loc["Karakoram"] = kara;
+	loc["Aravali"] = ara;
+	loc["Udaigiri"] = udai;
+	loc["Nilgiri"] = nil;
+	loc["SAC"] = sac;
+	loc["Gate1"] = gate1;
+	loc["Gate3"] = gate3;
+	loc["Gate6"] = gate6;
+	loc["Pantonic"] = pantonic;
+	loc["Holistic"] = holistic;
+	loc["Bharti"] = bharti;
+	loc["SIT"] = sit;
+	loc["Delhi16"] = delhi16;
+	loc["Kumaon Mess"] = kumaonmess;
+	loc["Zanskar Mess"] = zanskarmess;
+	loc["Atm1"] = atm1;
+	loc["Atm2"] = atm2;
+	loc["Atm3"] = atm3;
+	loc["Atm4"] = atm4;
+	loc["Atm5"] = atm5;
+	loc["Atm6"] = atm6;
+	loc["Satpura Night Mess"] = snm;
+	loc["Masalamix"] = masalamix;
+	loc["Chaayos"] = chaayos;
+	loc["Rajdhani"] = rajdhani;
+	loc["Volley"] = volley;
+	loc["Cricket"] = cricket;
+	loc["Hockey"] = hockey;
+	loc["Football"] = football;
+	loc["Apollo"] = apollo;
+	loc["Hospital"] = hospital;
+	loc["Scoops"] = scoops;
+	loc["Shiru Cafe"] = shiru;
+	loc["Library"] = library;
+	loc["LHC"] = lhc;
+	loc["Amul"] = amul;
+	loc["Nescafe"] = nescafe;
+	loc["Main Building"] = mainbuilding;
+	loc["Himadri Night Mess"] = hnm;
+	loc["Tennis"] = tennis;
+	loc["Research"] = research;
+	loc["Prof_House"] = prof_house;
 }

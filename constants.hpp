@@ -105,7 +105,7 @@ SDL_Rect  ara1 = {1067, 1791, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect  ara2 = {678, 1797, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect  udai = {6500, 500, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect  nil= {1440, 3503, LOC_OFFSET, LOC_OFFSET};
-
+SDL_Rect kumaon = {2349,816,LOC_OFFSET, LOC_OFFSET};
 
 // ATM Locations
 SDL_Rect  atm1 = {4042, 2175, LOC_OFFSET, LOC_OFFSET};
@@ -130,29 +130,32 @@ SDL_Rect  chaayos= { 5248, 2641, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect rajdhani = { 4800,3000 , LOC_OFFSET, LOC_OFFSET};
 SDL_Rect shiru = { 7877, 2605, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect  holistic = { 832, 2017, LOC_OFFSET, LOC_OFFSET};
+SDL_Rect  nescafe = { 8439, 2534, LOC_OFFSET, LOC_OFFSET};
+SDL_Rect  amul = {8123 , 2336 , LOC_OFFSET, LOC_OFFSET};
+SDL_Rect  hnm = {10655 ,1502 , LOC_OFFSET, LOC_OFFSET};
 
 // Sports Locations
 SDL_Rect volley = { 3085, 1732, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect cricket = {6942 , 3199, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect hockey = { 7880, 3130, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect football = { 5650, 3344, LOC_OFFSET, LOC_OFFSET};
+SDL_Rect tennis = { 2161, 1732, LOC_OFFSET, LOC_OFFSET};
 
 // Acad buildings
 SDL_Rect sac = {3000,3744 , LOC_OFFSET, LOC_OFFSET};
 SDL_Rect  pantonic = { 1500, 1440, LOC_OFFSET, LOC_OFFSET};
+SDL_Rect scoops = {8139, 2289, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect  bharti = { 7000, 2949, LOC_OFFSET, LOC_OFFSET};
 SDL_Rect sit = {6505 ,2694 , LOC_OFFSET, LOC_OFFSET};
 SDL_Rect lhc = { 9336,3277 , LOC_OFFSET, LOC_OFFSET};
 SDL_Rect lhc1 = { 9646,3100 , LOC_OFFSET, LOC_OFFSET};
+SDL_Rect research = {6332,4402,LOC_OFFSET, LOC_OFFSET};
+SDL_Rect research1 = {6775,4406,LOC_OFFSET, LOC_OFFSET};
+SDL_Rect library = {8286,2399,LOC_OFFSET,LOC_OFFSET};
+SDL_Rect mainbuilding = {8310,2130,LOC_OFFSET, LOC_OFFSET};
+// Medical
+SDL_Rect apollo = { 6029, 2948, LOC_OFFSET, LOC_OFFSET};
+SDL_Rect  hospital = { 6249, 2943, LOC_OFFSET, LOC_OFFSET};
 
-
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = {, , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
-// SDL_Rect  = { , , LOC_OFFSET, LOC_OFFSET};
+// Prof_House
+SDL_Rect prof_house = {11014,1640,LOC_OFFSET,LOC_OFFSET};
