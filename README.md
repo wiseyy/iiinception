@@ -21,8 +21,7 @@ To play the game, follow the following instructions.
 
 ## Objective
 
-The objective of the game is to meet with your COP290 teammate at 3 random location chosen by your teammate, while doing some tasks that he asks you to do. Make sure you reach to the location in time otherwise your teammate will complain to ma'am that you don't contribute to the project! Collect coins and eat food at mess to gain health and complete the project before your friend to get more points. The end points are decided by the quality of the project and bonus points for being the first person to give the demo. 
-You can also earn bonus points by being a good human being and putting the garbage on the roads into the trashcans nearby!
+The objective of the game is to make our campus a clean place by taking part in the NSS Cleanliness Drive. You have to collect the garbage at mentioned locations and throw them in the dustbin. It brings about happiness and health. Along with this you can also collect gift boxes and coins to help you get a better score. The person with more score wins the game! Make sure to avoid angry professors as they make you sad and lower your score.
 
 ## Assets
 
@@ -42,13 +41,13 @@ Pick giftbox to earn random but low points!
 <!-- ![gameplay](assets/garbage.png "garbage" =64x64) -->
 <img src="assets/garbage.png" width="64" height="64">
 
-Pick garbage and throw in trashcans to earn bonus points for cleaning the campus!
+Pick garbage and throw in trashcans to earn points for cleaning the campus!
 
 ### Trashcans
 <!-- ![gameplay](map/can.png "trashcans" =64x64) -->
 <img src="map/can.png" width="64" height="64">
 
-Pick garbage and throw in trashcans to earn bonus points for cleaning the campus!
+Pick garbage and throw in trashcans to earn points for cleaning the campus!
 
 ### Angry Professor
 <!-- ![gameplay](map/can.png "trashcans" =64x64) -->
