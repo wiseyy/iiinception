@@ -27,14 +27,17 @@ You can also earn bonus points by being a good human being and putting the garba
 
 ### Coins
 ![gameplay](assets/coin.png "coins")
+
 Pick coins to earn money and be more productive, and eat better!
 
 ### Giftbox
 ![gameplay](assets/box.png "giftbox")
+
 Pick giftbox to earn random boost in your player's characteristics!
 
 ### Garbage
 ![gameplay](assets/garbage.png "Gameplay")
+
 Pick garbage and throw in trashcans to earn bonus points for cleaning the campus!
 
 ## Pointing System
