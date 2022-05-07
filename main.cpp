@@ -359,7 +359,7 @@ int main(int argc, char *argv[])
 				frame++;
 			}
 
-			if(frame >= 60*5){
+			if(frame >= 60*60){
 				Texture lose1 , win1;
 				bool x1 = lose1.loadfromFile("assets/lose.jpg", gRenderer);
 				bool x2 = win1.loadfromFile("assets/win.jpg", gRenderer);
