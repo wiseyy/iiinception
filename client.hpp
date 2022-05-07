@@ -45,12 +45,9 @@ void to_server(const char *message)
 
 char buffer_client[1024] = {0};
 
-char *from_server()
+string from_server()
 {
-    for (int i = 0; i < 1024; i++)
-    {
-        buffer_client[i] = 0;
-    }
-    valread_client = read(sock, buffer_client, 1024);
-    return buffer_client;
+    char buffer2[1024] = {0};
+    valread_client = read(sock, buffer2, 1024);
+    return buffer2;
 }

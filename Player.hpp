@@ -475,6 +475,7 @@ string Player::get(){
 	for(int i = 0; i<ch.size(); i++){
 		ret += to_string(ch[i])+"_";
 	}
+	cout << ret << endl;
 	return ret;
 }
 

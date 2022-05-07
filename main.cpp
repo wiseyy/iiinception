@@ -215,11 +215,11 @@ int main(int argc, char *argv[])
 
 			if (server)
 			{
-				// string param = from_client();
-				// p2.set(param);
-				// string messagetoClient = p1.get();
-				// const char *mess = messagetoClient.c_str();
-				// to_client(mess);
+				string param = from_client();
+				string messagetoClient = p1.get();
+				const char *mess = messagetoClient.c_str();
+				to_client(mess);
+				p2.set(param);
 
 				frameStart = SDL_GetTicks();
 
@@ -270,11 +270,11 @@ int main(int argc, char *argv[])
 			}
 			else if (client)
 			{
-				// 		// string messagetoServer = p2.get();
-				// 		// const char *mess = messagetoServer.c_str();
-				// 		// to_server(mess);
-				// 		// string param = from_server();
-				// 		// p2.set(param);
+				string messagetoServer = p2.get();
+				const char *mess = messagetoServer.c_str();
+				to_server(mess);
+				string param = from_server();
+				p1.set(param);
 
 				frameStart = SDL_GetTicks();
 
@@ -323,6 +323,7 @@ int main(int argc, char *argv[])
 				}
 				frame++;
 			}
+			// cout << p2.getCoordinates().first << " " << p2.getCoordinates().second;
 		}
 	}
 }

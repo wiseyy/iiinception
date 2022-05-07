@@ -51,15 +51,12 @@ int start_server()
     return 0;
 }
 
-char buffer_server[1024] = {0};
-char *from_client()
+string from_client()
 {
-    for (int i = 0; i < 1024; i++)
-    {
-        buffer_server[i] = 0;
-    }
-    valread_server = read(sock, buffer_server, 1024);
-    return buffer_server;
+    // Creating socket file descriptor
+    char buffer[1024] = { 0 };
+    valread_server = read(new_socket, buffer, 1024);
+    return buffer;
 }
 
 void to_client(const char *message)
