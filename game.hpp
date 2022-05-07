@@ -15,6 +15,7 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 TTF_Font* gFont = NULL;
 // Function to initialize the SDL subsystems
+string eventHappened = "No Event";
 bool init();
 
 Texture start;
