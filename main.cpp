@@ -376,20 +376,25 @@ int main(int argc, char *argv[])
 					cout<< "Player1 wins\n" ;
 					if(client){
 						lose1.render(0, 0, gRenderer);
+						lose->play(2);
 					}
 					else{
 						win1.render(0, 0, gRenderer);
+						win->play(2);
 					}
 				}
 				else{
 					cout<< "Player2 wins\n" ;
 					if(client){
 						win1.render(0, 0, gRenderer);
+						win->play(2);
 					}
 					else{
 						lose1.render(0, 0, gRenderer);
+						lose->play(2);
 					}
 				}
+				SDL_RenderPresent(gRenderer);
 				SDL_Delay(5000);
 				break;
 			}
